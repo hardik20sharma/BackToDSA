@@ -1,0 +1,25 @@
+vector<vector<int>> dp;
+
+int helper(int capacity, vector<int> &val, vector<int> &wt, int n) {
+
+    if(dp[n][capacity] != -1)
+        return dp[n][capacity];
+
+    if(n == 0 || capacity == 0)
+        return dp[n][capacity] = 0;
+
+    if(capacity < wt[n-1])
+        return dp[n][capacity] = helper(capacity, val, wt, n-1);
+    else
+        return dp[n][capacity] = 
+        max( val[n-1] + helper(capacity - wt[n-1], val, wt, n-1),
+                    helper(capacity, val, wt, n-1) );
+}
+
+int knapSack(int capacity, vector<int> &val, vector<int> &wt) {
+    int n = wt.size();
+
+    dp.resize(n + 1, vector<int> (capacity + 1, -1));
+
+    return helper(capacity, val, wt, n);
+}
