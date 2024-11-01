@@ -1,0 +1,32 @@
+// https://www.geeksforgeeks.org/problems/jump-game
+
+int canReach(int a[], int n) {
+
+    if(n == 1)
+        return 1;
+
+    if(a[0] == 0)
+        return 0;
+
+    int end = a[0], reach = a[0];
+
+    for(int i = 1; i < n; i++) {
+        
+        if(i >= n-1)
+            return 1;
+
+        reach = max(reach, i + a[i]);
+
+        if(i == end) {
+            end = reach;
+
+            if(reach >= n-1)
+                return 1;
+        }
+
+        if(i >= reach)
+            return 0;
+    }
+
+    return 0;
+}
