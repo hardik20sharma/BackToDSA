@@ -1,0 +1,43 @@
+void helper(vector<vector<int>> &mat, vector<string> &res, int i, int j, string s, vector<vector<bool>> &visited) {
+
+    if(mat[i][j] == 0 || visited[i][j])
+        return;
+
+    int n = mat.size();
+
+    if(i == n-1 && j == n-1)
+        res.push_back(s);
+
+    visited[i][j] = true;
+
+    if(i < n-1 && mat[i+1][j] == 1)
+        helper(mat, res, i+1, j, s + "D", visited);
+
+    if(j < n-1 && mat[i][j+1] == 1)
+        helper(mat, res, i, j+1, s + "R", visited);
+
+    if(0 < i && mat[i-1][j] == 1)
+        helper(mat, res, i-1, j, s + "U", visited);
+
+    if(0 < j && mat[i][j-1] == 1)
+        helper(mat, res, i, j-1, s + "L", visited);
+
+    visited[i][j] = false;
+}
+
+vector<string> findPath(vector<vector<int>> &mat) {
+    int n = mat.size();
+
+    if(mat[0][0] == 0)
+        return {"-1"};
+
+    vector<string> res;
+    vector<vector<bool>> visited(n+1, vector<bool>(n+1, false));
+
+    helper(mat, res, 0, 0, "", visited);
+
+    if(res.empty())
+        res.push_back("-1");
+
+    return res;
+}
