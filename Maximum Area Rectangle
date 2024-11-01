@@ -1,0 +1,11 @@
+int calculate_Area(vector<pair<int, int>>&rect, int N) {
+
+    unsigned long res = 0, area = 0;
+
+    for(auto p : rect) {
+        area = (unsigned long) p.first * (unsigned long) p.second;
+        res = max(res, area);
+    }
+
+    return res;
+}
