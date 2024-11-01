@@ -1,0 +1,52 @@
+vector<long long> nextSmallerElement(vector<long long> &hist, int n) {
+    stack<long long> st;
+    st.push(-1);
+    vector<long long> res(n);
+    
+    for(long long i = n-1; i >= 0; i--) {
+
+        while(st.top() != -1 && hist[st.top()] >= hist[i])
+            st.pop();
+
+        res[i] = st.top();
+        st.push(i);
+    }
+
+    return res;
+}
+
+vector<long long> prevSmallerElement(vector<long long> &hist, int n){
+    stack<long long> st;
+    st.push(-1);
+    vector<long long> res(n);
+    
+    for(long long i = 0; i < n; i++) {
+    
+        while(st.top() != -1 && hist[st.top()] >= hist[i])
+            st.pop();
+
+        res[i] = st.top();
+        st.push(i);
+    }
+
+    return res;
+}
+
+long long getMaxArea(vector<long long> &hist) {
+
+    long long n = hist.size(), res = 0;
+
+    vector<long long> next = nextSmallerElement(hist, n);
+    vector<long long> prev = prevSmallerElement(hist, n);
+    
+    for(long long i = 0; i < n; i++) {
+
+        if(next[i] == -1)
+            next[i] = n;
+
+        long long area = hist[i] * (next[i] - prev[i] - 1);
+        res = max(res, area);
+
+    }
+    return res;
+}
