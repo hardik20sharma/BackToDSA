@@ -1,0 +1,40 @@
+class Solution {
+public:
+
+    int bitscount(int n) {
+        if(n == 0)
+            return 0;
+            
+        if(n % 2 == 0)
+            return bitscount(n/2);
+        return 1 + bitscount(n/2);
+    }
+
+    bool canSortArray(vector<int>& nums) {
+        
+        int bits = bitscount(nums[0]);
+        int maxOfSegment = nums[0], minOfSegment = nums[0];
+        int maxPrevSegment = INT_MIN;
+
+        for(int i = 1; i < nums.size(); i++)
+            if(bitscount(nums[i]) == bits) {
+                maxOfSegment = max(maxOfSegment, nums[i]);
+                minOfSegment = min(minOfSegment, nums[i]);
+            }
+            else {
+                if(minOfSegment < maxPrevSegment)
+                    return false;
+                
+                maxPrevSegment = maxOfSegment;
+
+                maxOfSegment = nums[i];
+                minOfSegment = nums[i];
+                bits = bitscount(nums[i]);
+            }
+
+        if(minOfSegment < maxPrevSegment)
+            return false;
+        
+        return true;
+    }
+};
