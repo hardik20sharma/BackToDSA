@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> maximumBeauty(vector<vector<int>>& items, vector<int>& queries) {
+        
+        vector<vector<int>> preCompute = {{0, 0, INT_MAX}};
+
+        sort(items.begin(), items.end());
+
+        for(auto item : items)
+            if(item[1] > preCompute[preCompute.size()-1][1]) {
+                preCompute[preCompute.size() - 1][2] = item[0];
+                preCompute.push_back({item[0], item[1], INT_MAX});
+            }
+
+        vector<int> res;
+
+        for(int q : queries)
+            for(int i = preCompute.size() - 1; i >= 0; i--)
+                if(preCompute[i][0] <= q) {
+                    res.push_back(preCompute[i][1]);
+                    break;
+                }
+        
+        return res;
+    }
+};
