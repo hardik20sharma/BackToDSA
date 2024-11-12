@@ -1,0 +1,31 @@
+class Solution {
+  public:
+    // nums: given vector
+    // return the Product vector P that hold product except self at each index
+    vector<long long> productExceptSelf(vector<int>& arr) {
+        
+        vector<long long> res;
+        
+        long long all = 1;
+        bool hasZero = false;
+        bool multipleZero = false;
+        
+        for(i : arr)
+            if(i != 0)
+                all *= i;
+            else if(hasZero && i == 0)
+                multipleZero = true;
+            else
+                hasZero = true;
+            
+        for(i : arr)
+            if(multipleZero)
+                res.push_back(0);
+            else if(i != 0)
+                hasZero ? res.push_back(0) : res.push_back(all / (long long) i);
+            else
+                res.push_back(all);
+
+        return res;
+    }
+};
