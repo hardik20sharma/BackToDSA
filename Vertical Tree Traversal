@@ -1,0 +1,27 @@
+void helper(Node *root, int x, int level, map<int, map<int, vector<int>>> &mp) {
+    
+    if(root == nullptr)
+        return;
+
+    mp[x][level].push_back(root->data);
+    helper(root->left, x-1, level + 1, mp);
+    helper(root->right, x+1, level + 1, mp);
+}
+
+vector<int> verticalOrder(Node *root)
+{
+    vector<int> res;
+    if(root == nullptr)
+        return res;
+
+    map<int, map<int, vector<int>>> mp;
+    
+    helper(root, 0, 0, mp);
+    
+    for(auto i : mp)
+        for(auto j : i.second)
+            for(auto k : j.second)
+                res.push_back(k);
+
+    return res;
+}
