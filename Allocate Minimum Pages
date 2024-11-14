@@ -1,0 +1,57 @@
+bool isPossible(vector<int> &arr, int n, int k, int currMin) {
+    
+    int reqStudents = 1, currSum = 0;
+
+    for(int i = 0; i < n; i++) {
+        
+        if(arr[i] > currMin)
+            return false;
+
+        if(currSum + arr[i] <= currMin) {
+            currSum += arr[i];
+        }
+        else {
+            reqStudents++;
+            currSum = arr[i];
+            
+            if(reqStudents > k)
+                return false;
+        }
+    }
+    
+    return true;
+}
+
+int findPages(vector<int> &arr, int k) {
+    
+    if(k > arr.size())
+        return -1;
+    
+    int sum = 0, maxPages = 0;
+    
+    for(int i : arr) {
+        sum += i;
+        maxPages = max(maxPages, i);
+    }
+    
+    if(k == 1)
+        return sum;
+    
+    if(arr.size() == k)
+        return maxPages;
+
+    int start = maxPages, end = sum, res = 0;
+
+    while(start <= end) {
+        int mid = start + (end - start) / 2;
+        
+        if(isPossible(arr, arr.size(), k, mid)) {
+            end = mid - 1;
+            res = mid;
+        }
+        else
+            start = mid + 1;
+    }
+    
+    return res;
+}
