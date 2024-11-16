@@ -1,0 +1,50 @@
+long long requiredPainters(vector<int> &arr, long long maxLen) {
+
+    long long total = 0, reqPainters = 1;
+
+    for(long long i = 0; i < arr.size(); i++) {
+
+        total += arr[i];
+        
+        if(total > maxLen) {
+            total = arr[i];
+            reqPainters++;
+        }
+    }
+
+    return reqPainters;
+}
+
+long long minTime(vector<int>& arr, int k) {
+
+    long long sum = 0;
+    int maxEle = 0;
+
+    for(i : arr) {
+        sum += i;
+        maxEle = max(maxEle, i);
+    }
+
+    if(k == 1)
+        return sum;
+
+    if(k == arr.size())
+        return maxEle;
+
+    long long start = maxEle, end = sum;
+
+    while(start < end) {
+        
+        long long mid = start + (end - start) / 2;
+        long long reqPainters = requiredPainters(arr, mid);
+
+        if(reqPainters <= k) {
+            end = mid;
+        }
+        else {
+            start = mid + 1;
+        }
+    }
+
+    return start;
+}
