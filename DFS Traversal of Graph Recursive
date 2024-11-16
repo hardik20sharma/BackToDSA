@@ -1,0 +1,25 @@
+void DFS(vector<vector<int>> &adj, int index, vector<bool> &visited, vector<int> &res) {
+    
+    if(res.size() == adj.size())
+        return;
+
+    if(visited[index])
+        return;
+
+    res.push_back(index);
+    visited[index] = true;
+
+    for(int i : adj[index]) {
+        if(visited[i] == false) {
+            DFS(adj, i, visited, res);
+        }
+    }
+}
+
+vector<int> dfsOfGraph(vector<vector<int>>& adj) {
+    
+    vector<int> res;
+    vector<bool> visited(adj.size(), false);
+    DFS(adj, 0, visited, res);
+    return res;
+}
