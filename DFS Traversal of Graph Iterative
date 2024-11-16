@@ -1,0 +1,26 @@
+vector<int> dfsOfGraph(vector<vector<int>>& adj) {
+    
+    vector<int> res;
+
+    vector<bool> visited(adj.size(), false);
+    stack<int> s;
+    s.push(0);
+
+    while(!s.empty()) {
+        
+        int store = s.top();
+        s.pop();
+
+        if(visited[store] == false) {
+            res.push_back(store);
+            visited[store] = true;
+        }
+
+        for(int i = adj[store].size() - 1; i >= 0; i--)
+            if(visited[adj[store][i]] == false) {
+                s.push(adj[store][i]);
+            }
+    }
+
+    return res;
+}
