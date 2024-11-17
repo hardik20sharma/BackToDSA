@@ -1,0 +1,58 @@
+void leftBoundary(Node *root, vector<int> &res) {
+
+    if(root == nullptr)
+        return;
+
+    if (root->left) {
+        res.push_back(root->data);
+        leftBoundary(root->left, res);
+    }
+    else if (root->right) {
+        res.push_back(root->data);
+        leftBoundary(root->right, res);
+    }
+}
+
+void leafBoundary(Node *root, vector<int> &res) {
+
+    if(root == nullptr)
+        return;
+
+    leafBoundary(root->left, res);
+
+    if(root->left == nullptr && root->right == nullptr)
+        res.push_back(root->data);
+
+    leafBoundary(root->right, res);
+}
+
+void rightBoundary(Node *root, vector<int> &res) {
+    
+    if(root == nullptr)
+        return;
+
+    if (root->right) {
+        rightBoundary(root->right, res);
+        res.push_back(root->data);
+    }
+    else if (root->left) {
+        rightBoundary(root->left, res);
+        res.push_back(root->data);
+    }
+}
+
+vector<int> boundaryTraversal(Node *root) {
+    vector<int> res;
+
+    if(root == nullptr)
+        return res;
+
+    res.push_back(root->data);
+
+    leftBoundary(root->left, res);
+    leafBoundary(root->left, res);
+    leafBoundary(root->right, res);
+    rightBoundary(root->right, res);
+
+    return res;
+}
