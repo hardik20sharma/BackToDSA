@@ -1,0 +1,16 @@
+bool detectLoop(Node* head) {
+    
+    Node *runner1 = head, *runner2 = head;
+
+    while(true) {
+        if(runner1->next == nullptr|| runner2->next == nullptr || runner2->next->next == nullptr) {
+            return false;
+        }
+
+        runner1 = runner1->next;
+        runner2 = runner2->next->next;
+
+        if(runner2 == runner1)
+            return true;
+    }
+}
