@@ -1,0 +1,48 @@
+Node* reverseLinkedList(Node *head) {
+
+    if(head == NULL || head->next == NULL)
+        return head;
+
+    Node *before = NULL, *curr = head;
+
+    while(curr) {
+        Node *after = curr->next;
+        curr->next = before;
+        before = curr;
+        curr = after;
+    }
+
+    return before;
+}
+
+Node* addOne(Node* head) {
+
+    if(head == NULL)
+        return NULL;
+
+    Node *h = head;
+    Node *reverse = reverseLinkedList(h);
+    Node *temp = reverse;
+
+    while(temp) {
+
+        temp->data++;
+
+        if(temp->data == 10) {
+
+            temp->data = 0;
+
+            if(temp->next == NULL) {
+                temp->next = new Node(1);
+                break;
+            }
+            else {
+                temp = temp->next;
+            }
+        }
+        else
+            break;
+    }
+    
+    return reverseLinkedList(reverse);
+}
