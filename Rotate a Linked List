@@ -1,0 +1,31 @@
+Node* rotateByOne(Node *head) {
+
+    if(head == NULL || head->next == NULL)
+        return head;
+
+    Node *store = head, *newHead = head->next;
+    Node *temp = newHead;
+
+    store->next = NULL;
+
+    while(temp && temp->next)
+        temp = temp->next;
+
+    temp->next = store;
+
+    return newHead;
+}
+
+Node* rotate(Node* head, int k) {
+
+    if(head == NULL || head->next == NULL)
+        return head;
+
+    Node *temp = head;
+    
+    while(k--) {
+        temp = rotateByOne(temp);
+    }
+    
+    return temp;
+}
