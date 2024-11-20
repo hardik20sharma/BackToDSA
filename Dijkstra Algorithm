@@ -1,0 +1,27 @@
+vector<int> dijkstra(vector<vector<pair<int, int>>> &adj, int src) {
+    
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    
+    vector<int> dist(adj.size(), INT_MAX);
+
+    pq.push({0, src});
+    dist[src] = 0;
+
+    while(!pq.empty()) {
+        
+        int curr = pq.top().second;
+        pq.pop();
+
+        for(auto neighbour : adj[curr]) {
+            int vertex = neighbour.first;
+            int weight = neighbour.second;
+            
+            if(dist[vertex] > dist[curr] + weight) {
+                dist[vertex] = dist[curr] + weight;
+                pq.push({dist[vertex], vertex});
+            }
+        }
+    }
+
+    return dist;
+}
