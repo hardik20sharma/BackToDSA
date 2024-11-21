@@ -1,0 +1,24 @@
+int findLongestConseqSubseq(vector<int>& arr) {
+
+    if(arr.size() == 1)
+        return 1;
+
+    sort(arr.begin(), arr.end());
+
+    int currCount = 1, res = 1;
+
+    for(int i = 1; i < arr.size(); i++) {
+        
+        if(arr[i] - arr[i-1] == 1) {
+            currCount++;
+            res = max(res, currCount);
+        }
+        else if(arr[i] == arr[i-1]) {
+            continue;
+        }
+        else
+            currCount = 1;
+    }
+
+    return res;
+}
