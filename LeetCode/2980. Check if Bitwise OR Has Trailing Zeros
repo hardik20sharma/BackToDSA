@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool hasTrailingZeros(vector<int>& nums) {
+        
+        bool firstEven = false;
+
+        for(int i : nums)
+            if(i % 2 == 0)
+                if(firstEven == false)
+                    firstEven = true;
+                else
+                    return true;
+        
+        return false;
+    }
+};
