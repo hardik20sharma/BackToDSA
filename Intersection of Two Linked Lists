@@ -1,0 +1,30 @@
+class Solution {
+  public:
+    
+    Node* findIntersection(Node* head1, Node* head2) {
+        
+        Node *res = NULL, *resTemp = NULL;
+        
+        unordered_set<int> s;
+        
+        for(Node *temp = head2; temp != NULL; temp = temp->next)
+            s.insert(temp->data);
+        
+        for(Node *temp = head1; temp != NULL; temp = temp->next)
+            if(s.find(temp->data) != s.end()) {
+                
+                Node *n = new Node(temp->data);
+                
+                if(res == NULL) {
+                    res = n;
+                    resTemp = res;
+                }
+                else {
+                    resTemp->next = n;
+                    resTemp = resTemp->next;
+                }
+            }
+        
+        return res;
+    }
+};
