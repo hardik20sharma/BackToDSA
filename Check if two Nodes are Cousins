@@ -1,0 +1,28 @@
+void findEle(Node *root, int &ele, int level, int parent, pair<int, int> &res) {
+    
+    if(root == NULL)
+        return;
+    
+    if(root->data == ele) {
+        res = {level + 1, parent};
+    }
+    
+    findEle(root->left, ele, level + 1, root->data, res);
+    findEle(root->right, ele, level + 1, root->data, res);
+}
+
+bool isCousins(Node* root, int x, int y) {
+    
+    if(root->data == x || root->data == y)
+        return false;
+    
+    pair<int, int> x_res, y_res;
+    
+    findEle(root->left, x, 0, root->data, x_res);
+    findEle(root->right, x, 0, root->data, x_res);
+    
+    findEle(root->left, y, 0, root->data, y_res);
+    findEle(root->right, y, 0, root->data, y_res);
+    
+    return (x_res.first == y_res.first) && (x_res.second != y_res.second);
+}
