@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool canChange(string start, string target) {
+        
+        queue<pair<char, int>> q;
+
+        for(int i = 0; i < target.size(); i++)
+            if(target[i] != '_')
+                q.push({target[i], i});
+
+        for(int i = 0; i < start.size(); i++) {
+            if(start[i] == '_')
+                continue;
+            
+            if(start[i] != q.front().first)
+                return false;
+
+            if(start[i] == 'L' && i < q.front().second)
+                return false;
+            
+            if(start[i] == 'R' && q.front().second < i)
+                return false;
+            
+            q.pop();
+        }
+
+        return q.empty();
+    }
+};
