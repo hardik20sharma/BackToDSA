@@ -1,0 +1,52 @@
+class Solution {
+public:
+
+    int lastPos(vector<int> &nums, int target, int low, int high) {
+
+        if(high < low)
+            return -1;
+
+        int mid = low + (high - low) / 2;
+
+        if((mid == nums.size() - 1 || nums[mid+1] != target) && nums[mid] == target)
+            return mid;
+
+        if(target < nums[mid])
+            return lastPos(nums, target, low, mid - 1);
+        else
+            return lastPos(nums, target, mid + 1, high);
+        
+        return -1;
+    }
+
+    int firstPos(vector<int> &nums, int target, int low, int high) {
+
+        if(high < low)
+            return -1;
+
+        int mid = low + (high - low) / 2;
+
+        if((mid == 0 || nums[mid-1] != target) && nums[mid] == target)
+            return mid;
+
+        if(target <= nums[mid])
+            return firstPos(nums, target, low, mid - 1);
+        else
+            return firstPos(nums, target, mid + 1, high);
+        
+        return -1;
+    }
+
+    vector<int> searchRange(vector<int>& nums, int target) {
+        
+        if(nums.size() == 0)
+            return {-1, -1};
+
+        vector<int> res;
+
+        res.push_back(firstPos(nums, target, 0, nums.size() - 1));
+        res.push_back(lastPos(nums, target, 0, nums.size() - 1));
+
+        return res;
+    }
+};
