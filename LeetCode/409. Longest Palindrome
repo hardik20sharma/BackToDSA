@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int longestPalindrome(string s) {
+        
+        vector<int> sLetters(26, 0), cLetters(26, 0);
+
+        for(char c : s)
+            if(isupper(c))
+                cLetters[c - 'A']++;
+            else
+                sLetters[c - 'a']++;
+
+        int cntEven = 0, odd = 0;
+
+        for(int i : cLetters)
+            if(i % 2 == 0)
+                cntEven += i;
+            else {
+                cntEven += i-1;
+                odd = 1;
+            }
+        
+        for(int i : sLetters)
+            if(i % 2 == 0)
+                cntEven += i;
+            else {
+                cntEven += i-1;
+                odd = 1;
+            }
+
+        return (cntEven + odd);
+    }
+};
