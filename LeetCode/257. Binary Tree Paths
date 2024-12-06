@@ -1,0 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+
+    void DFS(vector<string> &res, string s, TreeNode* root) {
+        
+        // Pulling an UNO reverse since root itself is NULL
+        if(root == NULL)
+            return;
+
+        // Once we reach leaf node, store the string which we got & pull an uno reverse
+        if(root->left == NULL && root->right == NULL) {
+            s += to_string(root->val);
+            res.push_back(s);
+            return;
+        }
+        
+        // Somewhere in middle of execution, long way ahead
+        s += to_string(root->val) + "->";
+
+        // Do DFS on left sub-tree only if it exists
+        if(root->left != NULL)
+            DFS(res, s, root->left);
+
+        // Do DFS on right sub-tree only if it exists
+        if(root->right != NULL)
+            DFS(res, s, root->right);
+    }
+
+    vector<string> binaryTreePaths(TreeNode* root) {
+        
+        vector<string> res;
+        string s = "";
+
+        DFS(res, s, root);
+
+        return res;
+    }
+};
