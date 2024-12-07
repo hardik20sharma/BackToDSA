@@ -1,0 +1,39 @@
+class Solution {
+
+    bool isPossible(vector<int> &nums, int maxBalls, int maxOps) {
+        
+        int totalOps = 0;
+
+        for(int i : nums) {
+
+            int ops = ceil(i / (double) maxBalls) - 1;
+            totalOps += ops;
+
+            if(totalOps > maxOps)
+                return false;
+        }
+
+        return true;
+    }
+
+public:
+    int minimumSize(vector<int>& nums, int maxOperations) {
+
+        int low = 1, high = -1;
+
+        for(int i : nums)
+            high = max(high, i);
+
+        while(low < high) {
+            
+            int mid = low + (high - low) / 2;
+
+            if(isPossible(nums, mid, maxOperations))
+                high = mid;
+            else
+                low = mid + 1;
+        }
+
+        return low;
+    }
+};
