@@ -1,0 +1,43 @@
+#define pii pair<int, int>
+class Solution {
+public:
+    long long findScore(vector<int>& nums) {
+        
+        long long res = 0;
+        int n = nums.size(), markCnt = 0;
+        
+        vector<bool> mark(n, false);
+        
+        priority_queue<pii, vector<pii>, greater<pii>> pq;
+
+        for(int i  = 0; i < n; i++)
+            pq.push( {nums[i], i} );
+
+        while(markCnt < n) {
+            
+            int minEle = pq.top().first;
+            int minEleIdx = pq.top().second;
+
+            pq.pop();
+
+            if(mark[minEleIdx])
+                continue;
+            
+            res += minEle;
+            mark[minEleIdx] = true;
+            markCnt++;
+
+            if(minEleIdx != 0 && mark[minEleIdx - 1] == false) {
+                mark[minEleIdx - 1] = true;
+                markCnt++;
+            }
+            
+            if(minEleIdx != n-1 && mark[minEleIdx + 1] == false) {
+                mark[minEleIdx + 1] = true;
+                markCnt++;
+            }
+        }
+
+        return res;
+    }
+};
