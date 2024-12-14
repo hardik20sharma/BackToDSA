@@ -1,0 +1,39 @@
+class Solution {
+public:
+    long long continuousSubarrays(vector<int>& nums) {
+        
+        long long res = 0;
+        
+        int l = 0;
+        int n = nums.size();
+
+        deque<int> maxIdx, minIdx;
+
+        for (int r = 0; r < n; r++) {
+
+            while (!maxIdx.empty() && nums[maxIdx.back()] <= nums[r])
+                maxIdx.pop_back();
+
+            maxIdx.push_back(r);
+
+            while (!minIdx.empty() && nums[minIdx.back()] >= nums[r])
+                minIdx.pop_back();
+
+            minIdx.push_back(r);
+
+            while (nums[maxIdx.front()] - nums[minIdx.front()] > 2) {
+                
+                l++;
+
+                if (maxIdx.front() < l)
+                    maxIdx.pop_front();
+
+                if (minIdx.front() < l)
+                    minIdx.pop_front();
+            }
+            
+            res += (r - l + 1);
+        }
+        return res;
+    }
+};
