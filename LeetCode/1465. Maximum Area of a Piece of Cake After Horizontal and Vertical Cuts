@@ -1,0 +1,27 @@
+class Solution {
+
+    const unsigned int mod = 1000000007;
+
+public:
+    int maxArea(int h, int w, vector<int>& hc, vector<int>& vc) {
+        
+        sort(hc.begin(), hc.end());
+        sort(vc.begin(), vc.end());
+
+        hc.insert(hc.begin(), 0);
+        hc.push_back(h);
+
+        vc.insert(vc.begin(), 0);
+        vc.push_back(w);
+
+        int hdiff = -1;
+        for(int i = 1; i < hc.size(); i++)
+            hdiff = max(hdiff, hc[i] - hc[i-1]) % mod;
+        
+        int wdiff = -1;
+        for(int i = 1; i < vc.size(); i++)
+            wdiff = max(wdiff, vc[i] - vc[i-1]) % mod;
+        
+        return ( 1LL * (hdiff % mod) * (wdiff % mod) ) % mod;
+    }
+};
