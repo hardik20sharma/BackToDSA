@@ -1,0 +1,23 @@
+class Solution {
+
+    void pop(vector<int> &circle, int &curr, int &k) {
+        int out = (curr + k - 1) % circle.size();
+        circle.erase(circle.begin() + out);
+        curr = out % circle.size();
+    }
+
+public:
+    int findTheWinner(int n, int k) {
+
+        vector<int> circle;
+        int curr = 0;
+
+        for(int i = 1; i <= n; i++)
+            circle.push_back(i);
+
+        while(circle.size() > 1)
+            pop(circle, curr, k);
+
+        return circle[0];
+    }
+};
