@@ -1,0 +1,35 @@
+// Solution where we compute from last row.
+class Solution {
+public:
+    vector<int> getRow(int rowIndex)
+    {
+        vector<int> ans {1}, prev {1};
+	    for (int i = 1; i <= rowIndex; i++)
+        {
+		    ans.push_back(1);
+		    for (int j = 1; j < i; j++)
+			    ans[j] = prev[j] + prev[j - 1];
+		    prev = ans;
+	    }
+	    return ans;
+    }
+};
+
+// Solution where we nCr formula. n! / ( r! * (n-r)! )
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        
+        vector<int> res(1, 1);
+
+        long long prev = 1;
+
+        for(int i = 1; i <= rowIndex; i++) {
+            long long curr = prev * (rowIndex - i + 1) / i;
+            prev = curr;
+            res.push_back(curr);
+        }
+
+        return res;
+    }
+};
