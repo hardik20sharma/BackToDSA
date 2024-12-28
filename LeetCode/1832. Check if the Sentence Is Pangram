@@ -1,0 +1,56 @@
+// Beats 100% space complexity
+class Solution {
+public:
+    bool checkIfPangram(string sentence) {
+        
+        vector<bool> letters(26, false);
+        
+        for(char c : sentence)
+            letters[c-'a'] = true;
+        
+        for(bool letter : letters)
+            if(!letter)
+                return false;
+        
+        return true;
+    }
+};
+
+class Solution {
+public:
+    bool checkIfPangram(string sentence) {
+        if(sentence.size() < 26)
+            return false;
+        
+        set<char> s;
+
+        for(int i = 0; i < 26; i++)
+            s.insert('a' + i);
+
+
+        for(char c : sentence)
+            s.erase(c);
+        
+        return s.empty();
+    }
+};
+
+// Beats 100% time complexity
+class Solution {
+public:
+    bool checkIfPangram(string sentence) {
+        if(sentence.size() < 26)
+            return false;
+        
+        unordered_set<char> s;
+
+        for(int i = 0; i < 26; i++)
+            s.insert('a' + i);
+
+
+        for(char c : sentence)
+            s.erase(c);
+        
+        return s.empty();
+    }
+};
