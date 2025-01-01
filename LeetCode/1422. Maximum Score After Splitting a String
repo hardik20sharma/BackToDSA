@@ -1,0 +1,37 @@
+/*
+
+    011101
+    111122
+    432110
+
+*/
+
+class Solution {
+public:
+    int maxScore(string s) {
+        
+        int n = s.size();
+        vector<int> cnt0(s.size(), 0), cnt1(s.size(), 0);
+
+        cnt0[0] = (s[0] == '0') ? 1 : 0;
+        cnt1[n-1] = (s[n-1] == '1') ? 1 : 0;
+
+        for(int i = 1; i < n; i++)
+            cnt0[i] = cnt0[i-1] + (s[i] == '0');
+
+        int cnt = 0;
+        for(int i = n - 1; i>= 0; i--) {
+            cnt1[i] = cnt;
+            
+            if(s[i] == '1')
+                cnt++;
+        }
+
+        int res = -1;
+
+        for(int i = 0; i < n-1; i++)
+            res = max(res, cnt0[i] + cnt1[i]);
+
+        return res;
+    }
+};
