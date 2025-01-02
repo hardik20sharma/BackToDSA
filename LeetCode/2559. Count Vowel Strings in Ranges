@@ -1,0 +1,30 @@
+class Solution {
+
+bool check(string s) {
+    
+    int n = s.size();
+
+    return (s[0] == 'a' || s[0] == 'e' || s[0] == 'i' || s[0] == 'o' || s[0] == 'u') && 
+        (s[n-1] == 'a' || s[n-1] == 'e' || s[n-1] == 'i' || s[n-1] == 'o' || s[n-1] == 'u'); 
+}
+
+public:
+    vector<int> vowelStrings(vector<string> &words, vector<vector<int>> &queries) {
+        
+        vector<int> preCompute;
+
+        preCompute.push_back(check(words[0]));
+
+        for(int i = 1; i < words.size(); i++)
+            preCompute.push_back(preCompute[i-1] + check(words[i]));
+
+        vector<int> res;
+        for(auto i : queries)
+            if(i[0] == 0)
+                res.push_back(preCompute[i[1]]);
+            else
+                res.push_back(preCompute[i[1]] - preCompute[i[0] - 1]);
+
+        return res;
+    }
+};
