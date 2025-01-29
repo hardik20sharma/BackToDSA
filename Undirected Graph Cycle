@@ -1,0 +1,32 @@
+bool dfs(int curr, int prev, vector<vector<int>> &adj, vector<bool> &visited) {
+    
+    visited[curr] = true;
+    
+    for(int i : adj[curr])
+        if(!visited[i]) {
+            bool ans = dfs(i, curr, adj, visited);
+            if(ans)
+                return true;
+        }
+        else if(visited[i] == true && i != prev) {
+            return true;
+        }
+    
+    return false;
+}
+
+bool isCycle(vector<vector<int>> &adj) {
+    
+    int n = adj.size();
+    vector<bool> visited(n);
+    
+    for(int i = 0; i < n; i++) {
+        if(!visited[i]) {
+            bool ans = dfs(i, NULL, adj, visited);
+            if(ans)
+                return true;
+        }
+    }
+
+    return false;
+}
