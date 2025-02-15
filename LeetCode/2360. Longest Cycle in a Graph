@@ -1,0 +1,37 @@
+class Solution {
+public:
+
+    int max_len = -1;
+
+    void dfs(int len, int curr, vector<int> &path, vector<bool> &visited, vector<int> &graph) {
+        
+        len++;
+        path[curr] = len;
+        visited[curr] = true;
+
+        int next = graph[curr];
+        
+        if(next != -1) {
+            if(!visited[next])
+                dfs(len, next, path, visited, graph);
+            else if(path[next] != 0)
+                max_len = max(max_len, path[curr] - path[next] + 1);
+        }
+
+        path[curr] = 0;
+    }
+
+    int longestCycle(vector<int>& graph) {
+        
+        int n = graph.size();
+
+        vector<bool> visited(n, false);
+        vector<int> path(n, 0);
+
+        for(int i = 0; i < n; i++)
+            if(!visited[i])
+                dfs(0, i, path, visited, graph);
+        
+        return max_len;
+    }
+};
