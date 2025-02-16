@@ -1,10 +1,10 @@
-void helper(int v, vector<vector<int>> &adj, vector<bool> &visited, stack<int> &s) {
+void dfs(int v, vector<vector<int>> &adj, vector<bool> &visited, stack<int> &s) {
     
     visited[v] = true;
     
     for(int i : adj[v])
         if(!visited[i])
-            helper(i, adj, visited, s);
+            dfs(i, adj, visited, s);
     
     s.push(v);
 }
@@ -17,7 +17,7 @@ vector<int> topologicalSort(vector<vector<int>>& adj) {
     
     for(int i = 0; i < adj.size(); i++)
         if(!visited[i])
-            helper(i, adj, visited, s);
+            dfs(i, adj, visited, s);
 
     while(!s.empty()) {
         res.push_back(s.top());
