@@ -1,0 +1,41 @@
+class Solution {
+public:
+
+    bool dfs(int curr, vector<vector<int>> &graph, vector<int> &visited, stack<int> &s) {
+
+        visited[curr] = 1;
+
+        for(int nxt : graph[curr])
+            if(visited[nxt] == 1 || (visited[nxt] == 0 && !dfs(nxt, graph, visited, s)))
+                return false;
+
+        visited[curr] = 2;
+        s.push(curr);
+        return true;
+    }
+
+    vector<int> findOrder(int n, vector<vector<int>>& prerequisites) {
+        
+        vector<vector<int>> graph (n);
+
+        for(auto i : prerequisites)
+            graph[i[1]].push_back(i[0]);
+
+        vector<int> visited(n, 0);
+        stack<int> s;
+
+        for(int i = 0; i < n; i++)
+            if(visited[i] == 0)
+                if(!dfs(i, graph, visited, s))
+                    return {};
+
+        vector<int> res;
+
+        while(!s.empty()) {
+            res.push_back(s.top());
+            s.pop();
+        }
+
+        return res;
+    }
+};
