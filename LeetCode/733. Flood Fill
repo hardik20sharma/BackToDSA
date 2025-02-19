@@ -1,0 +1,40 @@
+class Solution {
+public:
+
+    bool possible(int &m, int &n, int &initialColor, int i, int j, vector<vector<int>> &image, set<pair<int, int>> &visited) {
+        if(i < 0 || j < 0 || i >= m || j >= n)
+            return false;
+        return visited.find( {i, j} ) == visited.end() && image[i][j] == initialColor;
+    }
+
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        
+        if(image[sr][sc] == color)
+            return image;
+
+        int m = image.size(), n = image[0].size();
+        vector<vector<int>> directions { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
+        set<pair<int, int>> visited;
+
+        int initialColor = image[sr][sc];
+
+        queue<vector<int>> q;
+        q.push( {sr, sc} );
+
+        while(!q.empty()) {
+            
+            auto pixel = q.front();
+            int i = pixel[0];
+            int j = pixel[1];
+            visited.insert({i, j});
+            image[i][j] = color;
+            q.pop();
+
+            for(auto dir : directions)
+                if(possible(m, n, initialColor, i + dir[0], j + dir[1], image, visited))
+                    q.push( {i + dir[0], j + dir[1]} );
+        }
+
+        return image;
+    }
+};
