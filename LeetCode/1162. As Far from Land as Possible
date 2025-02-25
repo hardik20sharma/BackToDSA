@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& grid) {
+        
+        int m = grid.size(), n = grid[0].size(), maxDist = -1;
+        
+        vector<vector<int>> dist(m, vector<int>(n, -1));
+        queue<pair<int, int>> q;
+
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                if (grid[i][j] == 1) {
+                    q.push({i, j});
+                    dist[i][j] = 0;
+                }
+
+        if (q.empty() || q.size() == m * n)
+            return -1;
+
+        vector<vector<int>> dirs { {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
+
+        while (!q.empty()) {
+            auto [i, j] = q.front();
+            q.pop();
+            for (auto dir : dirs) {
+                int x = i + dir[0], y = j + dir[1];
+                if (x >= 0 && y >= 0 && x < m && y < n && dist[x][y] == -1) {
+                    dist[x][y] = dist[i][j] + 1;
+                    maxDist = max(maxDist, dist[x][y]);
+                    q.push({x, y});
+                }
+            }
+        }
+
+        return maxDist;
+    }
+};
