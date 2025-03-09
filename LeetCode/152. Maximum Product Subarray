@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& arr) {
+        
+        int n = arr.size();
+        int res = arr[0];
+        int currMin = arr[0], currMax = arr[0];
+        
+        for(int i = 1; i < n; i++) {
+            
+            int temp1 = min( {arr[i], arr[i] * currMin, arr[i] * currMax} );
+            int temp2 = max( {arr[i], arr[i] * currMin, arr[i] * currMax} );
+            
+            currMin = temp1;
+            currMax = temp2;
+            
+            res = max(res, currMax);
+        }
+        
+        return res;
+    }
+};
