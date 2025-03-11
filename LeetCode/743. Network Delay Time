@@ -1,0 +1,39 @@
+#define pii pair<int, int>
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        
+        vector<vector<pii>> adj(n+1);
+        vector<int> visited(n+1, INT_MAX);
+
+        for(auto time : times)
+            adj[time[0]].push_back( {time[2], time[1]} );
+        
+        priority_queue<pii, vector<pii>, greater<pii>> q;
+
+        q.push( {0, k} );
+        visited[k] = 0;
+
+        while(!q.empty()) {
+            int dis = q.top().first;
+            int curr = q.top().second;
+            q.pop();
+
+            for(auto nxt : adj[curr])
+                if(visited[nxt.second] > dis + nxt.first) {
+                    q.push( {dis + nxt.first, nxt.second} );
+                    visited[nxt.second] = dis + nxt.first;
+                }
+        }
+
+        int ans = 0;
+
+        for(int i = 1; i <= n; i++)
+            if(visited[i] == INT_MAX)
+                return -1;
+            else
+                ans = max(ans, visited[i]);
+
+        return ans;
+    }
+};
