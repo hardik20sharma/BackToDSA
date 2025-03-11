@@ -1,0 +1,52 @@
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        
+        int len = s.size(), left = 0, right = 0, total = 0;
+        int cnta = 0, cntb = 0, cntc = 0;
+
+        while(right < len) {
+
+            if(cnta > 0 && cntb > 0 && cntc > 0) {
+                
+                total += (len - right + 1);
+
+                if(s[left] == 'a')
+                    cnta--;
+                else if(s[left] == 'b')
+                    cntb--;
+                else if(s[left] == 'c')
+                    cntc--;
+
+                left++;
+            }
+            else {
+
+                if(s[right] == 'a')
+                    cnta++;
+                else if(s[right] == 'b')
+                    cntb++;
+                else if(s[right] == 'c')
+                    cntc++;
+
+                right++;
+            }
+        }
+
+        while(cnta > 0 && cntb > 0 && cntc > 0) {
+            
+            total += (len - right + 1);
+
+            if(s[left] == 'a')
+                cnta--;
+            else if(s[left] == 'b')
+                cntb--;
+            else if(s[left] == 'c')
+                cntc--;
+
+            left++;
+        }
+
+        return total;
+    }
+};
