@@ -1,0 +1,40 @@
+class Solution {
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+        
+        int n = graph.size();
+        queue<pair<int, int>> q;
+        vector<int> visited(n, -1);
+
+        for(int i = 0; i < n; i++) {
+
+            if(visited[i] != -1)
+                continue;
+
+            q.push( {i, 1} );
+    
+            while(!q.empty()) {
+                
+                int curr = q.front().first;
+                int curr_color = q.front().second;
+                q.pop();
+
+                for(int nxt : graph[curr]) {
+                    
+                    if(visited[nxt] == -1) {
+                        int nxt_color = (curr_color == 1) ? 2 : 1;
+                        visited[nxt] = nxt_color;
+                        q.push( {nxt, nxt_color} );
+                    }
+                }
+            }
+        }
+
+        for(int i = 0; i < n; i++)
+            for(int nxt : graph[i])
+                if(visited[nxt] == visited[i])
+                    return false;
+        
+        return true;
+    }
+};
