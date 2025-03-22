@@ -1,0 +1,24 @@
+class Solution {
+public:
+
+    bool sol(string &s, int i, int j, bool &deleted) {
+        
+        if(i >= j)
+            return true;
+
+        if(s[i] == s[j])
+            return sol(s, i+1, j-1, deleted);
+        
+        if(deleted)
+            return false;
+        else {
+            deleted = true;
+            return sol(s, i+1, j, deleted) || sol(s, i, j-1, deleted);
+        }
+    }
+
+    bool validPalindrome(string s) {
+        bool deleted = false;
+        return sol(s, 0, s.size() - 1, deleted);
+    }
+};
