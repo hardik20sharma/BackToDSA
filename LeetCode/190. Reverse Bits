@@ -1,0 +1,25 @@
+class Solution {
+public:
+    uint32_t reverseBits(uint32_t n) {
+        
+        string s;
+
+        while(n) {
+            s += to_string(n % 2);
+            n/=2;
+        }
+
+        while(s.size() < 32)
+            s += '0';
+
+        uint32_t res = 0, cnt = 0;
+
+        for(int i = s.size()-1; 0 <= i; i--) {
+            if(s[i] == '1')
+                res += pow(2, cnt);
+            cnt++;
+        }
+
+        return res;
+    }
+};
