@@ -1,0 +1,43 @@
+class Solution {
+public:
+    string convert(string s, int n) {
+        
+        if(n == 1)
+            return s;
+
+        vector<string> sub_str(n, "");
+
+        int i = 0;
+        int j = 0;
+        
+        while(i < s.size() && j < n) {
+            sub_str[j] += s[i];
+            i++;
+            j++;
+        }
+
+        while(i < s.size()) {   
+
+            j = n-2;
+            while(i < s.size() && 0 <= j) {
+                sub_str[j] += s[i];
+                i++;
+                j--;
+            }
+
+            j = 1;
+            while(i < s.size() && j < n) {
+                sub_str[j] += s[i];
+                i++;
+                j++;
+            }
+        }
+
+        string res = "";
+
+        for(string ss : sub_str)
+            res += ss;
+        
+        return res;
+    }
+};
