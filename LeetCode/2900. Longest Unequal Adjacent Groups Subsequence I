@@ -1,0 +1,26 @@
+class Solution {
+public:
+
+    vector<string> getLongestSubsequence(vector<string>& words, vector<int>& groups) {
+        
+        int n = words.size();
+        vector<string> startWith0;
+        vector<string> startWith1;
+
+        bool curr = 0;
+        for(int i = 0; i < n; i++)
+            if(groups[i] == curr) {
+                curr = !curr;
+                startWith0.push_back(words[i]);
+            }
+        
+        curr = 1;
+        for(int i = 0; i < n; i++)
+            if(groups[i] == curr) {
+                curr = !curr;
+                startWith1.push_back(words[i]);
+            }
+        
+        return (startWith0.size() > startWith1.size()) ? startWith0 : startWith1;
+    }
+};
