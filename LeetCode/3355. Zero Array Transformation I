@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool isZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
+        
+        int n = nums.size();
+        vector<int> diff(n+1, 0);
+        
+        for(auto query : queries) {
+            int left = query[0], right = query[1];
+            diff[left] += 1;
+            diff[right + 1] -= 1;
+        }
+
+        vector<int> finalArray;
+        int sum = 0;
+        
+        for (int i : diff) {
+            sum += i;
+            finalArray.push_back(sum);
+        }
+
+        for (int i = 0; i < n; i++)
+            if (finalArray[i] < nums[i])
+                return false;
+        
+        return true;
+    }
+};
