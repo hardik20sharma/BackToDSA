@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int maxRepeating(string word, string sequence) {
+        
+        int maxk = word.size() / sequence.size();
+
+        string maxSequence = sequence;
+        for(int i = 1; i < maxk; i++)
+            maxSequence += sequence;
+
+        int res = 0;
+
+        for(int i = 0; i < word.size(); i++) {
+            
+            int charMatchCnt = 0;
+            int tempi = i;
+            
+            for(int j = 0; j < maxSequence.size(); j++) {
+                if(word[tempi++] == maxSequence[j])
+                    charMatchCnt++;
+                else
+                    break;
+            }
+
+            res = max(res, (int) (charMatchCnt / sequence.size()) );
+        }
+
+        return res;
+    }
+};
