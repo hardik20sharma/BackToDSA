@@ -13,3 +13,18 @@ public:
         return num1 - num2;
     }
 };
+
+
+// A solution with O(1) time complexity. Uses mathematics.
+
+class Solution {
+public:
+    int differenceOfSums(int n, int m) {
+        
+        int k = n / m;
+        int num1 = (n * (n+1)) / 2;
+        int num2 = (k * (k+1)) * m;
+
+        return num1 - num2;
+    }
+};
