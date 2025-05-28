@@ -1,0 +1,54 @@
+class Solution {
+
+    vector<vector<int>> buildGraph(vector<vector<int>> &edges, int nodes) {
+        
+        vector<vector<int>> graph(nodes);
+
+        for(auto edge : edges) {
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+
+        return graph;
+    }
+
+    void dfs(vector<vector<int>> &graph, int node, int parent, int diameter, int &maxDiameter, int &farthestNode) {
+
+        if(diameter > maxDiameter) {
+            maxDiameter = diameter;
+            farthestNode = node;
+        }
+
+        for(auto next : graph[node]) {
+            if(next == parent)
+                continue;
+            dfs(graph, next, node, diameter + 1, maxDiameter, farthestNode);
+        }
+    }
+
+    int findDiameter(vector<vector<int>> &graph, int nodes) {
+
+        int diameter = 0, farthestNode = 0;
+
+        dfs(graph, 0, -1, 0, diameter, farthestNode);
+        dfs(graph, farthestNode, -1, 0, diameter, farthestNode);
+
+        return diameter;
+    }
+
+public:
+    int minimumDiameterAfterMerge(vector<vector<int>>& edges1, vector<vector<int>>& edges2) {
+        
+        int n = edges1.size() + 1, m = edges2.size() + 1;
+
+        vector<vector<int>> g1 = buildGraph(edges1, n);
+        vector<vector<int>> g2 = buildGraph(edges2, m);
+
+        int max1 = findDiameter(g1, n);
+        int max2 = findDiameter(g2, m);
+        int combined = ceil(max1/2.0) + ceil(max2/2.0) + 1;
+
+
+        return max( { max1, max2, combined} );
+    }
+};
