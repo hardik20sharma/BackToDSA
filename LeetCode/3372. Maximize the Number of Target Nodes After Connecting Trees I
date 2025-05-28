@@ -1,0 +1,51 @@
+class Solution {
+
+    vector<vector<int>> buildGraph(vector<vector<int>> &edges, int nodes) {
+        
+        vector<vector<int>> graph(nodes);
+
+        for(auto edge : edges) {
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+
+        return graph;
+    }
+
+    int dfs(vector<vector<int>> &graph, int curr, int parent, int k) {
+        
+        if(k < 0)
+            return 0;
+        
+        int count = 1;
+        for(int next : graph[curr]) {
+            if(next == parent)
+                continue;
+            count += dfs(graph, next, curr, k-1);
+        }
+        return count;
+    }
+
+public:
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2, int k) {
+
+        int n = edges1.size() + 1, m = edges2.size() + 1;
+
+        vector<vector<int>> g1 = buildGraph(edges1, n);
+        vector<vector<int>> g2 = buildGraph(edges2, m);
+
+        int maxRes2 = 0;
+
+        for(int i = 0; i < m; i++) {
+            int res2 = dfs(g2, i, -1, k-1);
+            maxRes2 = max(maxRes2, res2);
+        }
+
+        vector<int> res(n);
+
+        for(int i = 0; i < n; i++)
+            res[i] = maxRes2 + dfs(g1, i, -1, k);
+
+        return res;
+    }
+};
