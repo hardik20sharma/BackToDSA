@@ -30,8 +30,8 @@ class Solution {
 
         int diameter = 0, farthestNode = 0;
 
-        dfs(graph, 0, -1, 0, diameter, farthestNode);
-        dfs(graph, farthestNode, -1, 0, diameter, farthestNode);
+        dfs(graph, 0, -1, 0, diameter, farthestNode);   // First we find one farthest node from any index (0 in this case)
+        dfs(graph, farthestNode, -1, 0, diameter, farthestNode);    // This farthest node acts like a tree node, now we find the diameter or max depth
 
         return diameter;
     }
@@ -43,6 +43,9 @@ public:
 
         vector<vector<int>> g1 = buildGraph(edges1, n);
         vector<vector<int>> g2 = buildGraph(edges2, m);
+
+        // In case of trees, we check for leftDiameter, rightDiameter and a diameter including the node itself.
+        // A similar theme plays in case of graph. We check for leftGraph, rightGraph and combination of diameter.
 
         int max1 = findDiameter(g1, n);
         int max2 = findDiameter(g2, m);
