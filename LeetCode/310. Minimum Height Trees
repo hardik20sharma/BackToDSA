@@ -1,6 +1,68 @@
 // Efficent / Recommended approach
 
+class Solution {
 
+    vector<vector<int>> buildGraph(vector<vector<int>> &edges, int &n) {
+        
+        vector<vector<int>> graph(n);
+
+        for(auto edge : edges) {
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+
+        return graph;
+    }
+
+    vector<int> calculateInDegrees(vector<vector<int>> &graph, int &n) {
+
+        vector<int> inDegrees(n);
+
+        for(int i = 0; i < n; i++)
+            inDegrees[i] = graph[i].size();
+
+        return inDegrees;
+    }
+
+public:
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        
+        if(n == 1)
+            return {0};
+
+        vector<int> res;
+        vector<vector<int>> graph = buildGraph(edges, n);
+        vector<int> inDegrees = calculateInDegrees(graph, n);
+        queue<int> queueDegree1;
+
+        for(int i = 0; i < n; i++)
+            if(inDegrees[i] == 1)
+                queueDegree1.push(i);
+        
+        while(!queueDegree1.empty()) {
+            
+            int countOfDegreeOneNodes = queueDegree1.size();
+            res.clear();
+
+            while(countOfDegreeOneNodes--) {
+                int currNode = queueDegree1.front();
+                queueDegree1.pop();
+                
+                res.push_back(currNode);
+
+                for(int nextNode : graph[currNode]) {
+                    
+                    inDegrees[nextNode]--;
+                    
+                    if(inDegrees[nextNode] == 1)
+                        queueDegree1.push(nextNode);
+                }
+            }
+        }
+
+        return res;
+    }
+};
 
 
 
