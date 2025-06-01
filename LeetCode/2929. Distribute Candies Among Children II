@@ -1,0 +1,13 @@
+class Solution {
+public:
+    long long distributeCandies(int n, int limit) {
+        
+        long long ans = 0;
+        for (int x = 0; x <= min(limit, n); x++) {
+            if (n-x > 2 * limit)
+                continue;
+            ans += min(n-x, limit) - max(0, n-x-limit) + 1;
+        }
+        return ans;
+    }
+};
