@@ -1,0 +1,59 @@
+class Solution {
+public:
+
+    int findMaxNum(int num) {
+        string s = to_string(num);
+        int n = s.size();
+
+        int iFirstNonNine = 0;
+
+        while(iFirstNonNine < n)
+            if(s[iFirstNonNine] == '9')
+                iFirstNonNine++;
+            else
+                break;
+        
+        if(iFirstNonNine == n)
+            return num;
+        
+
+        string maxS = s;
+        char c = s[iFirstNonNine];
+
+        for(int i = 0; i < n; i++)
+            if(maxS[i] == c)
+                maxS[i] = '9';
+
+        return stoi(maxS);
+    }
+
+    int findMinNum(int num) {
+
+        string s = to_string(num);
+        int n = s.size();
+
+        int iFirstNonZero = 0;
+
+        while(iFirstNonZero < n)
+            if(s[iFirstNonZero] == '0')
+                iFirstNonZero++;
+            else
+                break;
+        
+        if(iFirstNonZero == n)
+            return num;
+        
+        string minS = s;
+        char c = s[iFirstNonZero];
+
+        for(int i = 0; i < n; i++)
+            if(minS[i] == c)
+                minS[i] = '0';
+
+        return stoi(minS);
+    }
+
+    int minMaxDifference(int num) {
+        return findMaxNum(num) - findMinNum(num);
+    }
+};
