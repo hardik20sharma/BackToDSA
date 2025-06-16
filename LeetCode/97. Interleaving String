@@ -1,0 +1,37 @@
+class Solution {
+
+    bool solve(string &s1, string &s2, string &s3, int i, int j, int k, vector<vector<int>> &dp) {
+
+        if(i < 0 && j < 0 && k < 0)
+            return true;
+
+        if(0 <= i && 0 <= j && dp[i][j] != -1)
+            return dp[i][j];
+
+        if(0 <= i && 0 <= j && s1[i] == s3[k] && s2[j] == s3[k])
+            return dp[i][j] = solve(s1, s2, s3, i-1, j, k-1, dp) || solve(s1, s2, s3, i, j-1, k-1, dp);
+        
+        if(0 <= i && s1[i] == s3[k])
+            return solve(s1, s2, s3, i-1, j, k-1, dp);
+        
+        if(0 <= j && s2[j] == s3[k])
+            return solve(s1, s2, s3, i, j-1, k-1, dp);
+        
+        return false;
+    }
+
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        
+        int s1len = s1.size();
+        int s2len = s2.size();
+        int s3len = s3.size();
+
+        if(s3len != s1len + s2len)
+            return false;
+
+        vector<vector<int>> dp(s1len + 1, vector<int> (s2len + 1, -1));
+
+        return solve(s1, s2, s3, s1len-1, s2len-1, s3len-1, dp);
+    }
+};
