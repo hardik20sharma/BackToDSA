@@ -1,0 +1,45 @@
+class Solution {
+
+    bool checkRow(string s, string row) {
+
+        for(int i = 0; i < s.size(); i++) {
+            
+            bool found = false;
+            
+            for(int j = 0; j < row.size(); j++)
+                if(s[i] == row[j])
+                    found = true;
+            
+            if(found == false)
+                return false;
+        }
+
+        return true;
+    }
+
+    bool isGood(string s) {
+
+        transform(s.begin(), s.end(), s.begin(), ::tolower);
+        string row1 = "qwertyuiop";
+        string row2 = "asdfghjkl";
+        string row3 = "zxcvbnm";
+
+        bool r1 = checkRow(s, row1);
+        bool r2 = checkRow(s, row2);
+        bool r3 = checkRow(s, row3);
+
+        return r1 || r2 || r3;
+    }
+
+public:
+    vector<string> findWords(vector<string>& words) {
+        
+        vector<string> res;
+
+        for(string word : words)
+            if(isGood(word))
+                res.push_back(word);
+
+        return res;
+    }
+};
