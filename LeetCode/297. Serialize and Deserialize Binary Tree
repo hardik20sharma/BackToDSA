@@ -1,0 +1,94 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+
+    string join(vector<string> str) {
+        
+        string res;
+
+        for(string s : str)
+            res += s + ',';
+
+        if(!res.empty())
+            res.pop_back();
+
+        return res;
+    }
+
+    void preorder(TreeNode *root, vector<string> &res) {
+
+        if(root == NULL)
+            res.push_back("X");
+        else {
+            res.push_back(to_string(root->val));
+            preorder(root->left, res);
+            preorder(root->right, res);
+        }
+    }
+
+    queue<string> separate(string data) {
+        
+        queue<string> res;
+
+        string s;
+        for(int i = 0; i < data.size(); i++) {
+            
+            if(data[i] == ',') {
+                res.push(s);
+                s = "";
+            }
+            else
+                s += data[i];
+        }
+
+        res.push(s);
+
+        return res;
+    }
+
+    TreeNode* deseralize_helper(queue<string> &q) {
+        
+        if(q.empty())
+            return NULL;
+        
+        if(q.front() == "X") {
+            q.pop();
+            return NULL;
+        }
+        
+        TreeNode *node = new TreeNode(stoi(q.front()));
+        q.pop();
+
+        node->left = deseralize_helper(q);
+        node->right = deseralize_helper(q);
+
+        return node;
+    }
+
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        vector<string> res;
+        preorder(root, res);
+        return join(res);
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        TreeNode *node = new TreeNode();
+        queue<string> q = separate(data);
+        return deseralize_helper(q);
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser, deser;
+// TreeNode* ans = deser.deserialize(ser.serialize(root));
