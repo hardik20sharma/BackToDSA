@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int countHillValley(std::vector<int>& nums) {
+    int countHillValley(vector<int>& nums) {
 
         int count = 0, left = 0;
 
