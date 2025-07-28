@@ -1,0 +1,28 @@
+class Solution {
+
+    void subset(vector<int> &nums, int &target, int &res, int curr, int i) {
+
+        if(i < 0) {
+            if(curr == target)
+                res++;
+            return;
+        }
+
+        subset(nums, target, res, curr, i-1);
+        subset(nums, target, res, curr | nums[i], i-1);
+    }
+
+public:
+    int countMaxOrSubsets(vector<int>& nums) {
+        
+        int max_or = 0;
+        int res = 0;
+
+        for(int i : nums)
+            max_or = max_or | i;
+        
+        subset(nums, max_or, res, 0, nums.size() - 1);
+
+        return res;
+    }
+};
