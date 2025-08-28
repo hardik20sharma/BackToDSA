@@ -1,0 +1,40 @@
+class Solution {
+
+    vector<vector<int>> dir;
+
+    int dfs(vector<vector<int>> &grid, int x, int y, int nxtNum, bool turn, int d) {
+        
+        int i = x + dir[d][0], j = y + dir[d][1];
+
+        if(i < 0 || j < 0 || i >= grid.size() || j >= grid[0].size() || grid[i][j] != nxtNum)
+            return 0;
+        
+        int change = 0;
+        int straight = dfs(grid, i, j, 2 - nxtNum, turn, d);
+        
+        if(turn) {
+            change = dfs(grid, i, j, 2 - nxtNum, !turn, (d+1) % 4);
+        }
+
+        return max(straight, change) + 1;
+    }
+
+public:
+    int lenOfVDiagonal(vector<vector<int>>& grid) {
+        
+        dir = { {1, 1}, {1, -1}, {-1, -1}, {-1, 1} };
+        
+        int m = grid.size(), n = grid[0].size();
+        int res = 0;
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++)
+                if(grid[i][j] == 1) {
+                    for(int d = 0; d < dir.size(); d++)
+                        res = max(res, dfs(grid, i, j, 2, true, d) + 1);
+                }
+        }
+
+        return res;        
+    }
+};
