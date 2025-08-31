@@ -1,0 +1,59 @@
+class Solution {
+public:
+    int minimumArea(vector<vector<int>>& grid) {
+
+        int up = 0, down = grid.size() - 1;
+        int left = 0, right = grid[0].size() - 1;
+
+        // Move left boundary
+        bool found = false;
+        for (; left < right; left++) {
+            found = false;
+            for (int i = 0; i < grid.size(); i++) {
+                if (grid[i][left] == 1) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) break;
+        }
+
+        // Move right boundary
+        for (; left < right; right--) {
+            found = false;
+            for (int i = 0; i < grid.size(); i++) {
+                if (grid[i][right] == 1) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) break;
+        }
+
+        // Move up boundary
+        for (; up < down; up++) {
+            found = false;
+            for (int j = 0; j < grid[0].size(); j++) {
+                if (grid[up][j] == 1) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) break;
+        }
+
+        // Move down boundary
+        for (; up < down; down--) {
+            found = false;
+            for (int j = 0; j < grid[0].size(); j++) {
+                if (grid[down][j] == 1) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) break;
+        }
+
+        return (right - left + 1) * (down - up + 1);
+    }
+};
