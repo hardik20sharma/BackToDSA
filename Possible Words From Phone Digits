@@ -1,0 +1,28 @@
+class Solution {
+    
+    vector<string> map { "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+
+    void sol(string s, vector<string> &res, vector<int> &arr, int i) {
+        
+        if(i >= arr.size()) {
+            res.push_back(s);
+            return;
+        }
+        
+        if(arr[i] == 0 || arr[i] == 1) {
+            sol(s, res, arr, i+1);
+        }
+
+        for(char c : map[arr[i]]) {
+            sol(s + c, res, arr, i+1);
+        }
+    }
+
+  public:
+    vector<string> possibleWords(vector<int> &arr) {
+        
+        vector<string> res;
+        sol("", res, arr, 0);
+        return res;
+    }
+};
