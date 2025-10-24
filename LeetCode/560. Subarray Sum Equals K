@@ -1,0 +1,51 @@
+class Solution {
+public:
+
+    // This solution works in O(n^2) with O(n) space -- Brute Force Solution
+    int subarraySumBruteForce(vector<int>& nums, int k) {
+        
+        int n = nums.size();
+        int res = 0;
+        
+        vector<int> prefixSum(n);
+        prefixSum[0] = nums[0];
+
+        for(int i = 1; i < n; i++)
+            prefixSum[i] = nums[i] + prefixSum[i-1];
+
+        for(int i = 0; i < n; i++) {
+
+            if(prefixSum[i] == k)
+                res++;
+
+            for(int j = 0; j < i; j++) {
+                if(prefixSum[i] - prefixSum[j] == k)
+                    res++;
+            }
+
+        }
+
+        return res;
+    }
+
+    // The below function uses hashmap. Time complexity reduces to O(n) with space complexity O(n).
+    int subarraySum(vector<int>& nums, int k) {
+        
+        int n = nums.size(), res = 0, sum = 0;
+
+        unordered_map<int, int> prefixSum;
+        prefixSum[0] = 1;
+
+        for(int i = 0; i < n; i++) {
+
+            sum += nums[i];
+
+            if(prefixSum.contains(sum - k))
+                res+= prefixSum[sum - k];
+
+            prefixSum[sum]++;
+        }
+
+        return res;
+    }
+};
