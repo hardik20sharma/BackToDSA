@@ -1,0 +1,94 @@
+// Brute Force Solution - Using a new board/matrix
+class Solution {
+
+    int m;
+    int n;
+    vector<vector<int>> moves;
+
+    int val(vector<vector<int>> &board, int x, int y) {
+        
+        if(x < 0 || x >= m || y < 0 || y >= n)
+            return 0;
+        
+        return board[x][y];
+    }
+
+public:
+    void gameOfLife(vector<vector<int>>& board) {
+        
+        m = board.size();
+        n = board[0].size();
+        moves = { {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1} };
+        
+        vector<vector<int>> sol(m, vector<int>(n, 0));
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+
+                int cnt = 0;
+
+                for(auto move : moves)
+                    cnt += val(board, i + move[0], j + move[1]);
+
+                if( 
+                    (board[i][j] == 1 && (cnt == 2 || cnt == 3) ) || 
+                    (board[i][j] == 0 && cnt == 3) 
+                )
+                        sol[i][j] = 1;
+                    else
+                        sol[i][j] = 0;
+                
+            }
+        }
+
+        board = sol;
+    }
+};
+
+
+// Updated solution, with in-place space complexity.
+class Solution {
+
+    int m;
+    int n;
+    vector<vector<int>> moves;
+
+    int val(vector<vector<int>> &board, int x, int y) {
+        
+        if(x < 0 || x >= m || y < 0 || y >= n)
+            return 0;
+        
+        return (abs(board[x][y]) == 1) ? 1 : 0;
+    }
+
+public:
+    void gameOfLife(vector<vector<int>>& board) {
+        
+        m = board.size();
+        n = board[0].size();
+        moves = { {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1} };
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+
+                int cnt = 0;
+
+                for(auto move : moves)
+                    cnt += val(board, i + move[0], j + move[1]);
+
+                if (board[i][j] == 1 && (cnt < 2 || 3 < cnt) )
+                    board[i][j] = -1;
+    
+                if (board[i][j] == 0 && cnt == 3) 
+                    board[i][j] = 2;                
+            }
+        }
+
+        for(int i = 0; i < m; i++)
+            for(int j = 0; j < n; j++)
+                if(board[i][j] > 0)
+                    board[i][j] = 1;
+                else
+                    board[i][j] = 0;
+    }
+};
