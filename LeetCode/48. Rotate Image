@@ -1,0 +1,19 @@
+class Solution {
+public:
+    void rotate(vector<vector<int>>& m) {
+        
+        int n = m.size();
+
+        // The problem can be solved by imagining in two parts.
+        // 1. Rotate on i == j axis, i.e. 1-5-9 in example 1. The 7 will go in place of 3, 4 in place of 2, 8 in place of 6
+        // 2. Once rotated, now all that is need to be done is reverse each of the rows.
+
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j <= i; j++)
+                swap(m[i][j], m[j][i]);
+        
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < n/2; j++)
+                swap(m[i][j], m[i][n-j-1]);
+    }
+};
