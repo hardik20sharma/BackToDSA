@@ -1,0 +1,28 @@
+class Solution {
+
+    void sol(int &k, int &sum, vector<vector<int>> &res, vector<int> &subRes, int currSum, int start) {
+
+        if(subRes.size() == k) {
+        
+            if(currSum == sum)
+                res.push_back(subRes);
+        
+            return;
+        }
+
+        for(int i = start; i <= 9; i++) {
+            subRes.push_back(i);
+            sol(k, sum, res, subRes, currSum + i, i + 1);
+            subRes.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> combinationSum3(int k, int sum) {
+
+        vector<vector<int>> res;
+        vector<int> subRes;
+        sol(k, sum, res, subRes, 0, 1);
+        return res;
+    }
+};
