@@ -1,0 +1,68 @@
+struct TrieNode {
+    
+    TrieNode *letters[26];
+    bool isEnd;
+
+    TrieNode() {
+        for(int i = 0; i < 26; i++)
+            letters[i] = NULL;
+        isEnd = false;
+    }
+};
+
+class WordDictionary {
+
+    TrieNode *trie;
+
+public:
+    WordDictionary() {
+        trie = new TrieNode();
+    }
+    
+    void addWord(string word) {
+        
+        TrieNode *temp = trie;
+
+        for(char c : word) {
+            if(temp->letters[c-'a'] == NULL)
+                temp->letters[c-'a'] = new TrieNode();
+            temp = temp->letters[c-'a'];
+        }
+
+        temp->isEnd = true;
+    }
+    
+    void dfs(TrieNode *temp, string &word, int idx, bool &res) {
+
+        if(res == true)
+            return;
+
+        if(temp == NULL)
+            return;
+
+        if(idx == word.size()) {
+            res = temp->isEnd;
+            return;
+        }
+        
+        if(word[idx] == '.') {
+            for(int i = 0; i < 26; i++)
+                dfs(temp->letters[i], word, idx + 1, res);
+        }
+        else
+            dfs(temp->letters[word[idx] - 'a'], word, idx + 1, res);
+    }
+
+    bool search(string word) {
+        bool res = false;
+        dfs(trie, word, 0, res);
+        return res;
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
