@@ -1,0 +1,86 @@
+class Solution {
+
+    vector<vector<int>> moves;
+    int n;
+
+    void dfs(vector<vector<int>>& grid, int x, int y, queue<vector<int>>& bfsQueue) {
+        
+        stack<vector<int>> dfsStack;
+        dfsStack.push({x, y});
+        
+        while (!dfsStack.empty()) {
+        
+            int currX = dfsStack.top()[0], currY = dfsStack.top()[1];
+            dfsStack.pop();
+        
+            if (grid[currX][currY] != 1)
+                continue;
+        
+            grid[currX][currY] = 2;
+            bfsQueue.push({currX, currY});
+        
+            for (auto& move : moves) {
+
+                int newX = currX + move[0], newY = currY + move[1];
+
+                if (isMovePossible(newX, newY) && grid[newX][newY] == 1)
+                    dfsStack.push({newX, newY});
+            }
+        }
+    }
+
+    bool isMovePossible(int x, int y) {
+        return 0 <= x && x < n && 0 <= y && y < n;
+    }
+
+public:
+    int shortestBridge(vector<vector<int>>& grid) {
+
+        n = grid.size();
+        moves = vector<vector<int>> { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };
+
+        int res = 0;
+        int firstOneX = -1, firstOneY = -1;
+
+        queue<vector<int>> bfsQueue;
+
+        for(int i = 0 ; i < n && firstOneX == -1 && firstOneY == -1; i++)
+            for(int j = 0; j < n && firstOneX == -1 && firstOneY == -1; j++)
+                if(grid[i][j] == 1) {
+                    firstOneX = i;
+                    firstOneY = j;
+                }
+
+        dfs(grid, firstOneX, firstOneY, bfsQueue);
+
+        while(!bfsQueue.empty()) {
+
+            int currQueueSize = bfsQueue.size();
+
+            for(int i = 0; i < currQueueSize; i++) {
+                
+                int currX = bfsQueue.front()[0];
+                int currY = bfsQueue.front()[1];
+                bfsQueue.pop();
+
+                for(auto move : moves) {
+
+                    int newX = currX + move[0], newY = currY + move[1];
+
+                    if(isMovePossible(newX, newY)) {
+                        if(grid[newX][newY] == 1)
+                            return res;
+                        else if(grid[newX][newY] == 0) {
+                            bfsQueue.push( {newX, newY} );
+                            grid[newX][newY] = -1;
+                        }
+                    }
+                }
+            }
+
+            res++;
+        }
+
+        return res;
+    }
+};
