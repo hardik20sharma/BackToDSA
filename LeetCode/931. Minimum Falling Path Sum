@@ -1,0 +1,44 @@
+class Solution {
+
+    int n;
+    vector<vector<int>> dp;
+
+    bool isMovePossible(int x, int y) {
+        return 0 <= x && x < n && 0 <= y && y < n;
+    }
+
+    int dfs(vector<vector<int>> &matrix, int x, int y) {
+        
+        if(x == n-1)
+            return matrix[x][y];
+
+        if(dp[x][y] != INT_MAX)
+            return dp[x][y];
+
+        int subRes1 = INT_MAX, subRes2 = INT_MAX, subRes3 = INT_MAX;
+
+        if(isMovePossible(x+1, y-1))
+            subRes1 = matrix[x][y] + dfs(matrix, x+1, y-1);
+        
+        if(isMovePossible(x+1, y))
+            subRes2 = matrix[x][y] + dfs(matrix, x+1, y);
+
+        if(isMovePossible(x+1, y+1))
+            subRes3 = matrix[x][y] + dfs(matrix, x+1, y+1);
+
+        return dp[x][y] = min(subRes1, min(subRes2, subRes3) );
+    }
+
+public:
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        
+        n = matrix.size();
+        dp.resize(n, vector<int>(n, INT_MAX));
+        int res = INT_MAX;
+
+        for(int j = 0; j < n; j++)
+            res = min( res, dfs(matrix, 0, j) );
+
+        return res;
+    }
+};
