@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool checkRecord(string s) {
+        
+        int acnt = 0, lcnt = 0;
+
+        for(char c : s) {
+            if(c == 'P') {
+                lcnt = 0;
+            }
+            else if(c == 'A') {
+                lcnt = 0;
+                acnt++;
+            }
+            else if(c == 'L') {
+                lcnt++;
+            }
+
+            if(lcnt >= 3 || acnt >= 2)
+                return false;
+        }
+
+        return true;
+    }
+};
