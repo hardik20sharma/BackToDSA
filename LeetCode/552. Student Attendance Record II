@@ -1,0 +1,78 @@
+// 3 - DP Solution
+class Solution {
+
+    vector<vector<vector<long long>>> dp;
+    int MOD = 1e9+7;
+
+    int solve(int n, int absentDays, int lateDays) {
+
+        if(n == 0)
+            return 1;
+        
+        if(dp[n][absentDays][lateDays] != -1)
+            return dp[n][absentDays][lateDays];
+
+        long long absent = 0, late = 0, present = 0;
+
+        if(absentDays != 0)
+            absent = solve(n-1, absentDays - 1, 2) % MOD;
+        
+        if(lateDays != 0)
+            late = solve(n-1, absentDays, lateDays - 1) % MOD;
+        
+        present = solve(n-1, absentDays, 2) % MOD;
+
+        return dp[n][absentDays][lateDays] = (absent + late + present) % MOD;
+    }
+
+public:
+    int checkRecord(int n) {
+        dp.resize(n+1, vector<vector<long long>>(3, vector<long long>(4, -1)));
+        return solve(n, 1, 2);
+    }
+};
+
+// 2 - DP SOlution, Constant Space of 6 size. Computing the same DP table n - times.
+
+class Solution {
+
+    int MOD = 1e9+7;
+
+public:
+    int checkRecord(int n) {
+
+        vector<vector<long long>> dp(2, vector<long long> (3, 0));
+        dp[0][0] = 1;
+        
+        for(int i = 0; i < n; i++) {
+
+            vector<vector<long long>> newDP(2, vector<long long> (3, 0));
+            
+            for(int a = 0; a < 2; a++) {
+                for(int l = 0; l < 3; l++) {
+                    
+                    // Present Case
+                    newDP[a][0] = (newDP[a][0] + dp[a][l]) % MOD;
+
+                    // Absent Case
+                    if(a < 1)
+                        newDP[a+1][0] = (newDP[a+1][0] + dp[a][l]) % MOD;
+
+                    // Late Case
+                    if(l < 2)
+                        newDP[a][l+1] = (newDP[a][l+1] + dp[a][l]) % MOD;
+                }
+            }
+
+            dp = newDP;
+        }
+
+        long long total = 0;
+
+        for(int a = 0; a < 2; a++)
+            for(int l = 0; l < 3; l++)
+                total = (total + dp[a][l]) % MOD;
+
+        return total;
+    }
+};
