@@ -1,0 +1,43 @@
+class Solution {
+
+    int inf = 1e6+10;
+
+    int dfs(vector<int> &houses, vector<vector<int>> &cost, int &m, int &n, int &target, int nbrCnt, int idx, int prevColor, vector<vector<vector<int>>> &dp) {
+
+        if(idx == m)
+            return (nbrCnt == target) ? 0 : inf;
+
+        if(nbrCnt > target)
+            return inf;
+        
+        if(dp[idx][nbrCnt][prevColor] != -1)
+            return dp[idx][nbrCnt][prevColor];
+
+        if(houses[idx] == 0) {
+
+            int minCost = inf;
+            
+            for(int color = 1; color <= n; color++)
+                if(prevColor != color)
+                    minCost = min(minCost, cost[idx][color-1] + dfs(houses, cost, m, n, target, nbrCnt + 1, idx + 1, color, dp));
+                else
+                    minCost = min(minCost, cost[idx][color-1] + dfs(houses, cost, m, n, target, nbrCnt, idx + 1, color, dp));
+            
+            return dp[idx][nbrCnt][prevColor] = minCost;
+        }
+        else {
+
+            if(houses[idx] != prevColor)
+                return dp[idx][nbrCnt][prevColor] = dfs(houses, cost, m, n, target, nbrCnt + 1, idx + 1, houses[idx], dp);
+            else
+                return dp[idx][nbrCnt][prevColor] = dfs(houses, cost, m, n, target, nbrCnt, idx + 1, houses[idx], dp);
+        }
+    }
+
+public:
+    int minCost(vector<int>& houses, vector<vector<int>>& cost, int m, int n, int target) {
+        vector<vector<vector<int>>> dp(m+1, vector<vector<int>>(target+1, vector<int>(n+1, -1))); // house idx, nbrCnt, colorCnt
+        int res = dfs(houses, cost, m, n, target, 0, 0, 0, dp);
+        return (res < inf) ? res : -1;
+    }
+};
