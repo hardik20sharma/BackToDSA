@@ -1,0 +1,74 @@
+class Solution {
+
+    int m;
+    int n;
+    vector<vector<int>> moves;
+    vector<vector<int>> gridDistance;
+
+    bool isValidMove(int x, int y) {
+        return 0 <= x && x < m && 0 <= y && y < n;
+    }
+
+    void fillGridDistance(vector<vector<int>> &grid, int startX, int startY) {
+
+        queue<pair<int, int>> q;
+        gridDistance[startX][startY] = 0;
+        q.push( {startX, startY} );
+
+        while(!q.empty()) {
+            
+            int x = q.front().first;
+            int y = q.front().second;
+            q.pop();
+
+            for(auto &move : moves) {
+                
+                int i = x + move[0], j = y + move[1];
+                
+                if(isValidMove(i, j) && gridDistance[i][j] == -1) {
+                    if(grid[i][j] > 0) {
+                        gridDistance[i][j] = gridDistance[x][y] + 1;
+                        q.push( {i, j} );
+                    }
+                    else
+                        gridDistance[i][j] = 0;
+                }
+            }
+        }
+    }
+
+public:
+    vector<vector<int>> highestRankedKItems(vector<vector<int>>& grid, vector<int>& pricing, vector<int>& start, int k) {
+        
+        m = grid.size();
+        n = grid[0].size();
+        moves = { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
+
+        gridDistance.resize(m, vector<int> (n, -1));
+        fillGridDistance(grid, start[0], start[1]);
+
+        priority_queue<vector<int>> pq;
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                
+                if(pricing[0] <= grid[i][j] && grid[i][j] <= pricing[1] && gridDistance[i][j] >= 0)
+                    pq.push( { gridDistance[i][j], grid[i][j], i, j } );
+
+                while(pq.size() > k)
+                    pq.pop();
+            }
+        }
+        
+        vector<vector<int>> res;
+
+        while(!pq.empty()) {
+            res.push_back( { pq.top()[2], pq.top()[3] } );
+            pq.pop();
+        }
+
+        reverse(res.begin(), res.end());
+
+        return res;
+    }
+};
