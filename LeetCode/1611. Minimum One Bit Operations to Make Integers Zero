@@ -1,0 +1,95 @@
+class Solution {
+
+public:
+
+    int minimumOneBitOperations(int n) {
+
+        if (n == 0)
+            return 0;
+
+        int powerOfTwoGreaterThanN = 0;
+
+        // Find smallest power of two greater than n
+        while (powerOfTwoGreaterThanN < 30 && pow(2, powerOfTwoGreaterThanN) <= n) {
+            powerOfTwoGreaterThanN++;
+        }
+
+        int highestPowerOfTwo = pow(2, powerOfTwoGreaterThanN - 1);
+
+        int leftOverNumber = n ^ highestPowerOfTwo;     // Removing the left-most 1 bit from n
+
+        int res = pow(2, powerOfTwoGreaterThanN) - 1;   // Result of nums which are perfect power of 2
+
+        return res - minimumOneBitOperations(leftOverNumber);
+    }
+
+};
+
+/*
+    num             res         Opeation
+    00 (0)           0           No
+    01 (1)           1           1st
+    02 (10)          3           1st -> 2nd -> 1st
+    03 (11)          2           2nd -> 1st
+    04 (100)         7           1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st
+    05 (101)         6           2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st
+    06 (110)         4           2nd -> 1st -> 2nd -> 1st
+    07 (111)         5           1st -> 2nd -> 1st -> 2nd -> 1st
+    08 (1000)        15          1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1s
+    09 (1001)        14          2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st
+    10 (1010)        12          2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st
+    11 (1011)        13          1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st
+    12 (1100)        8           2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st
+    13 (1101)        9           1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st
+    14 (1110)        11          1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st
+    15 (1111)        10          2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st -> 2nd -> 1st
+    16 (10000)       31
+    17 (10001)       30
+    18 (10010)       28
+    19 (10011)       29
+    20 (10100)       24
+    21 (10101)       25
+    22 (10110)       27
+    23 (10111)       26
+    24 (11000)       16
+    25 (11001)       17
+    26 (11010)       19
+    27 (11011)       18
+    28 (11100)       23
+    29 (11101)       22
+    30 (11110)       20
+    31 (11111)       21
+
+
+    01 (1)           01
+    02 (10)          03
+    03 (11)          02
+    04 (100)         07
+    07 (111)         05
+    08 (1000)        15 
+    15 (1111)        10
+    16 (10000)       31
+    31 (11111)       21
+
+    
+    02 (10)          03
+    
+    04 (100)         07
+    
+    08 (1000)        15 
+    02 (10)          3
+    16 (10000)       31
+    18 (10010)       28
+    
+
+    For perfect 2, 4, 8, 16 we have to add one more power then subtract -1 from it. So it comes to 3, 7, 15, 31, 63 so on
+
+    Another pattern we noticed was 
+    3 -> 2 
+    6 -> 4
+    12 -> 8
+    24 -> 16
+    48 -> 32
+    96 -> 64
+*/
+
