@@ -1,0 +1,53 @@
+class Solution {
+
+    int m;
+    int n;
+    vector<vector<int>> moves;
+
+    bool isPossible(int i, int j) {
+        return 0 <= i && i < m && 0 <= j && j < n;
+    }
+
+    bool dfs(vector<vector<char>> &grid, vector<vector<bool>> &visited, int i, int j, int parenti = -1, int parentj = -1) {
+
+        if(visited[i][j])
+            return true;
+
+        visited[i][j] = true;
+
+        bool res = false;
+
+        for(auto &move : moves) {
+            
+            int newi = i + move[0], newj = j + move[1];
+            
+            if(isPossible(newi, newj) && grid[i][j] == grid[newi][newj]) {
+                if(newi != parenti || newj != parentj)
+                    res = (res || dfs(grid, visited, newi, newj, i, j));
+            }
+        }
+
+        return res;
+    }
+
+public:
+    bool containsCycle(vector<vector<char>>& grid) {
+        
+        m = grid.size();
+        n = grid[0].size();
+        moves = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+
+        vector<vector<bool>> visited(m, vector<bool>(n, false));
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(visited[i][j] == false) {
+                    if(dfs(grid, visited, i, j))
+                        return true;
+                }
+            }
+        }
+
+        return false;
+    }
+};
