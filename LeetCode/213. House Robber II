@@ -1,0 +1,62 @@
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        
+        int n = nums.size();
+        int res = 0;
+
+        if(n == 1)
+            return nums[0];
+        
+        if(n == 2)
+            return max(nums[0], nums[1]);
+
+        vector<int> dp1(n, 0);  // This is for case of 0 to n-2
+
+        dp1[0] = nums[0];
+        dp1[1] = max(nums[0], nums[1]);
+
+        for(int i = 2; i < n-1; i++)
+            dp1[i] = max(nums[i] + dp1[i-2], dp1[i-1]);
+
+        vector<int> dp2(n, 0);  // This is for case of 1 to n-1
+
+        dp2[0] = 0;
+        dp2[1] = nums[1];
+
+        for(int i = 2; i < n; i++)
+            dp2[i] = max(nums[i] + dp2[i-2], dp2[i-1]);
+
+        for(int i = 0; i < n; i++)
+            res = max( {res, dp1[i], dp2[i]} );
+
+        return res;
+    }
+};
+
+/*
+
+    Problem can be divided into two parts
+    1. 0 to n-2
+    2. 1 to n-1
+
+    We need max of both. this should be the result
+
+    let's try a dry run first
+
+    1)
+
+    2   3   2
+
+    0 to n-2 will give us 0 to 1. which will basically give us 2
+    1 to n-1 will give us 1 to 2. which will basically give us 3
+    ans should be 3
+
+    2)
+
+    1   2   3   1
+
+    0 to n-2 will give us 0 to 2. which will basically give us 4
+    1 to n-1 will give us 1 to 3. which will basically give us 3
+    ans should be 4
+*/
