@@ -1,0 +1,52 @@
+class Solution {
+
+    // Time Complexity - O(n^2), Space Complexity - O(n)
+    int LIS_based_solution(vector<vector<int>> &pairs) {
+
+        sort(pairs.begin(), pairs.end());
+
+        int n = pairs.size();
+        int maxLen = 1;
+        vector<int> dp(n, 1);
+
+        for(int i = 1; i < n; i++)
+            for(int prev = 0; prev < i; prev++)
+                if(pairs[prev][1] < pairs[i][0]) {
+                    dp[i] = max(dp[i], 1 + dp[prev]);
+                    maxLen = max(maxLen, dp[i]);
+                }
+        
+        return maxLen;
+    }
+
+    static bool cmp(vector<int> &v1, vector<int> &v2){
+        return v1[1] < v2[1];
+    }
+
+    int sorting_based_solution(vector<vector<int>> &pairs) {
+
+        sort(pairs.begin(), pairs.end(), cmp);
+        
+        int n = pairs.size();
+        int maxLen = 1;
+        vector<int> prev = pairs[0];
+
+        for(auto nxt : pairs) {
+            
+            if(prev[1] < nxt[0]) {
+                maxLen++;
+                prev = nxt;
+            }
+        }
+
+        return maxLen;
+    }
+
+public:
+    int findLongestChain(vector<vector<int>>& pairs) {
+        
+        // return LIS_based_solution(pairs);
+
+        return sorting_based_solution(pairs);
+    }
+};
