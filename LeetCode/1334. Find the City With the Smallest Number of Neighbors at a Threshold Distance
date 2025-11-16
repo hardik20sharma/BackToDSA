@@ -1,0 +1,62 @@
+#define pii pair<int, int>
+class Solution {
+
+    void dijikstra(vector<vector<pii>> &graph, vector<vector<int>> &dist, int start) {
+
+        priority_queue<pii, vector<pii>, greater<pii>> pq;
+        pq.push( {0, start} );
+        dist[start][start] = 0;
+
+        while(!pq.empty()) {
+            
+            auto [weight, curr] = pq.top();
+            pq.pop();
+
+            int currDist = dist[start][curr];
+
+            for(auto nxt : graph[curr]) {
+                
+                int nxtWeight = nxt.first, nxtNode = nxt.second;
+
+                if(dist[start][nxtNode] > currDist + nxtWeight) {
+                    dist[start][nxtNode] = currDist + nxtWeight;
+                    pq.push( { dist[start][nxtNode], nxtNode } );
+                }
+            }
+        }
+    }
+
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
+        
+        vector<vector<pii>> graph(n);
+
+        for(auto edge : edges) {
+            graph[edge[0]].push_back( {edge[2], edge[1]} );
+            graph[edge[1]].push_back( {edge[2], edge[0]} );
+        }
+
+        vector<vector<int>> dist(n, vector<int>(n, INT_MAX));
+
+        for(int i = 0; i < n; i++)
+            dijikstra(graph, dist, i);
+
+        int res = 0, minCnt = INT_MAX;
+
+        for(int i = 0; i < n; i++) {
+            
+            int cnt = 0;
+
+            for(int j = 0; j < n; j++)
+                if(dist[i][j] <= distanceThreshold)
+                    cnt++;
+
+            if(minCnt >= cnt) {
+                minCnt = cnt;
+                res = i;
+            }
+        }
+
+        return res;
+    }
+};
