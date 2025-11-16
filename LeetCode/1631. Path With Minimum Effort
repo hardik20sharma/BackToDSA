@@ -1,0 +1,43 @@
+// Store {effort, {row, col}}
+#define piii pair<int, pair<int, int>>
+class Solution {
+public:
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        
+        int m = heights.size(), n = heights[0].size();
+        int dirs[4][2] = { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
+
+        vector<vector<int>> dist(m, vector<int>(n, INT_MAX));
+        dist[0][0] = 0;
+
+        priority_queue<piii, vector<piii>, greater<piii>> pq;
+        pq.push ( {0, {0, 0} } );
+
+        while(!pq.empty()) {
+
+            int effort = pq.top().first;
+            auto [r, c] = pq.top().second;
+            pq.pop();
+
+            if(r == m-1 && c == n-1)
+                return effort;
+            
+            for(auto dir : dirs) {
+                
+                int i = r + dir[0], j = c + dir[1];
+
+                if(i < 0 || m <= i || j < 0 || n <= j)
+                    continue;
+                
+                int newEffort = max(effort, abs(heights[r][c] - heights[i][j]));
+                
+                if (dist[i][j] > newEffort) {
+                    dist[i][j] = newEffort;
+                    pq.push({dist[i][j], {i, j}});
+                }
+            }
+        }
+
+        return 0;
+    }
+};
