@@ -1,0 +1,48 @@
+class Solution {
+
+    bool isSimilar(string s1, string s2) {
+        
+        int diff = 0;
+
+        for(int i = 0; i < s1.size(); i++)
+            if(s1[i] != s2[i])
+                diff++;
+        
+        return diff <= 2;
+    }
+
+    void dfs(vector<vector<int>> &graph, vector<bool> &visited, int idx) {
+        
+        visited[idx] = true;
+
+        for(auto nxt : graph[idx])
+            if(!visited[nxt])
+                dfs(graph, visited, nxt);
+    }
+
+public:
+    int numSimilarGroups(vector<string>& str) {
+        
+        int n = str.size();
+        
+        vector<vector<int>> graph(n);
+
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < n; j++)
+                if(isSimilar(str[i], str[j])) {
+                    graph[i].push_back(j);
+                    graph[j].push_back(i);
+                }
+
+        vector<bool> visited(n, false);
+        int cnt = 0;
+
+        for(int i = 0; i < n; i++)
+            if(!visited[i]) {
+                dfs(graph, visited, i);
+                cnt++;
+            }
+        
+        return cnt;
+    }
+};
