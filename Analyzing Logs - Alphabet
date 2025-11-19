@@ -1,0 +1,89 @@
+// Online C++ compiler to run C++ program online
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node {
+    string name;
+    int start;
+    int end;
+    vector<Node*> children;
+};
+
+void out(string s, int start, int end) {
+    cout << s << ": " << start << " - " << end << "\n";
+}
+
+void solve(Node *root) {
+    
+    if(root == NULL)
+        return;
+    
+    if(root->children.size() == 0) {
+        out(root->name, root->start, root->end);
+        return;
+    }
+    
+    int start = root->start;
+    
+    for(int i = 0; i < root->children.size(); i++) {
+        
+        out(root->name, start, root->children[i]->start);
+        
+        solve(root->children[i]);
+
+        start = root->children[i]->end;
+    }
+    
+    if(start != root->end)
+        out(root->name, start, root->end);
+}
+
+int main() {
+    
+    Node *a = new Node();
+    a->name = "a";
+    a->start = 1;
+    a->end = 100;
+    
+    Node *b = new Node();
+    b->name = "b";
+    b->start = 25;
+    b->end = 75;
+    
+    Node *c = new Node();
+    c->name = "c";
+    c->start = 35;
+    c->end = 45;
+    
+    Node *d = new Node();
+    d->name = "d";
+    d->start = 85;
+    d->end = 90;
+    
+    b->children.push_back(c);
+    a->children.push_back(b);
+    a->children.push_back(d);
+
+    solve(a);
+
+    return 0;
+}
+
+/*
+
+    a: 1 - 100
+        b: 25 - 75
+            c: 35 - 45
+        d: 85 - 90
+
+Print:
+
+a:  1-25
+b: 25-35
+c: 35-45
+b: 45-75
+a: 75-85
+d: 85-90
+a: 90-100
+
+*/
