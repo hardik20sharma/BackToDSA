@@ -1,0 +1,46 @@
+class Solution {
+
+    bool isValidCode(string s) {
+
+        if(s.size() == 0)
+            return false;
+
+        for(char c : s)
+            if(c != '_')
+                if( !('a' <= c && c <= 'z') && !('A' <= c && c <= 'Z') && !('0' <= c && c <= '9') )
+                    return false;
+        
+        return true;
+    }
+
+public:
+    vector<string> validateCoupons(vector<string>& code, vector<string>& businessLine, vector<bool>& isActive) {
+        vector<string> electronics;
+        vector<string> grocery;
+        vector<string> pharmacy;
+        vector<string> restaurant;
+
+        for(int i = 0; i < code.size(); i++)
+            if(isActive[i] && isValidCode(code[i]))
+                if(businessLine[i] == "electronics")
+                    electronics.push_back(code[i]);
+                else if(businessLine[i] == "grocery")
+                    grocery.push_back(code[i]);
+                else if(businessLine[i] == "pharmacy")
+                    pharmacy.push_back(code[i]);
+                else if(businessLine[i] == "restaurant")
+                    restaurant.push_back(code[i]);
+
+        sort(electronics.begin(), electronics.end());
+        sort(grocery.begin(), grocery.end());
+        sort(pharmacy.begin(), pharmacy.end());
+        sort(restaurant.begin(), restaurant.end());
+
+        vector<string> res(electronics.begin(), electronics.end());
+        copy(grocery.begin(), grocery.end(), back_inserter(res));
+        copy(pharmacy.begin(), pharmacy.end(), back_inserter(res));
+        copy(restaurant.begin(), restaurant.end(), back_inserter(res));
+
+        return res;
+    }
+};
