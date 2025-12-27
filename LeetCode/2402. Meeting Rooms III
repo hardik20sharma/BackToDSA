@@ -1,0 +1,55 @@
+class Solution {
+public:
+    int mostBooked(int n, vector<vector<int>>& meetings) {
+
+        vector<int> room_cnt(n, 0);
+
+        sort(meetings.begin(), meetings.end());
+
+        priority_queue<int, vector<int>, greater<int>> free_room;
+
+        for(int i = 0; i < n; i++)
+            free_room.push(i);
+
+        priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> used_room;
+
+        for(auto meeting : meetings) {
+
+            int start = meeting[0], end = meeting[1];
+
+            while(!used_room.empty() && used_room.top().first <= start) {
+                
+                auto [prev_end, room] = used_room.top();
+                used_room.pop();
+
+                free_room.push(room);
+            }
+
+            if(!free_room.empty()) {
+                
+                int room = free_room.top();
+                free_room.pop();
+
+                used_room.push( {end, room} );
+                room_cnt[room]++;
+
+            }
+            else {
+                auto [prev_end, room] = used_room.top();
+                used_room.pop();
+
+                long long new_end = (prev_end - start) + end;
+                used_room.push( {new_end, room} );
+                room_cnt[room]++;
+            }
+        }
+
+        int max_cnt = *max_element(room_cnt.begin(), room_cnt.end());
+
+        for(int i = 0; i < n; i++)
+            if(room_cnt[i] == max_cnt)
+                return i;
+
+        return 0;
+    }
+};
