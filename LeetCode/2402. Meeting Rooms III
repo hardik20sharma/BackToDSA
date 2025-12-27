@@ -53,3 +53,36 @@ public:
         return 0;
     }
 };
+
+
+/*
+
+Problem Description
+You have n meeting rooms numbered from 0 to n - 1.
+
+You're given a list of meetings, where each meeting is represented as [start_time, end_time]. The time interval is half-closed, meaning [start, end) includes the start time but excludes the end time. All start times are unique.
+
+The meeting room allocation follows these rules:
+
+Lowest available room first: Each meeting gets assigned to the unused room with the smallest number.
+
+Delay if no rooms available: If all rooms are busy, the meeting waits until a room becomes free. When it finally starts, it keeps its original duration. For example, if a meeting was supposed to run from time 2 to 5 (duration 3), but all rooms are busy until time 7, it will run from time 7 to 10 (still duration 3).
+
+Earlier meetings get priority: When a room becomes available and multiple meetings are waiting, the meeting with the earlier original start time gets the room first.
+
+Your task is to find which room hosted the most meetings. If multiple rooms hosted the same maximum number of meetings, return the room with the smallest number.
+
+For example, if you have 2 rooms and meetings [[0,10], [1,5], [2,7], [3,4]]:
+
+Meeting [0,10] gets room 0 (runs 0-10)
+Meeting [1,5] gets room 1 (runs 1-5)
+Meeting [2,7] waits until room 1 is free at time 5, then runs 5-10 in room 1
+Meeting [3,4] waits until a room is free at time 10, then runs 10-11 in room 0
+Room 0 hosted 2 meetings, room 1 hosted 2 meetings, so we return room 0 (smaller number).
+
+*/
+
+
+
+
+
