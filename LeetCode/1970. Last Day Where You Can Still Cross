@@ -1,0 +1,65 @@
+class Solution {
+public:
+
+    bool isMovePossible(int &m, int &n, int i, int j) {
+        return 0 <= i && i < m && 0 <= j && j < n;
+    }
+
+    bool isPossible(int &m, int &n, vector<vector<int>> &cells, int mid) {
+
+        vector<vector<int>> graph(m, vector<int>(n, 0));
+        vector<vector<int>> moves = { {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
+
+        for(int i = 0; i <= mid; i++)
+            graph[cells[i][0]-1][cells[i][1]-1] = 1;
+
+        queue<pair<int, int>> q;
+
+        for(int j = 0; j < n; j++)
+            if(graph[0][j] == 0) {
+                q.push( {0, j} );
+                graph[0][j] = 1;
+            }
+        
+        while(!q.empty()) {
+            
+            auto [x, y] = q.front();
+
+            if(x == m-1)
+                return true;
+
+            q.pop();
+
+            for(auto move : moves) {
+                int i = x + move[0], j = y + move[1];
+                if(isMovePossible(m, n, i, j) && graph[i][j] == 0) {
+                    q.push( {i, j} );
+                    graph[i][j] = 1;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    int latestDayToCross(int row, int col, vector<vector<int>>& cells) {
+        
+        int n = cells.size();
+        int res = 0;
+        int low = 0, high = n-1;
+
+        while(low <= high) {
+
+            int mid = low + (high - low) / 2;
+
+            if(isPossible(row, col, cells, mid)) {
+                res = mid;
+                low = mid + 1;
+            }
+            else
+                high = mid - 1;
+        }
+
+        return res+1;
+    }
+};
