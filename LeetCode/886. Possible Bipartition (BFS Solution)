@@ -1,0 +1,45 @@
+#define pii pair<int, int>
+class Solution {
+public:
+    bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
+        
+        vector<vector<int>> graph(n);
+        vector<int> visited(n, -1);
+
+        for(auto d : dislikes) {
+            int u = d[0] - 1, v = d[1] - 1;
+            graph[u].push_back(v);
+            graph[v].push_back(u);
+        }
+
+        queue<pii> q;   // {curr, color}
+
+        for(int i = 0; i < n; i++) {
+
+            if(visited[i] != -1)
+                continue;
+
+            q.push( {i, 0} );
+
+            while(!q.empty()) {
+                
+                auto [curr, color] = q.front();
+                q.pop();
+
+                visited[curr] = color;
+
+                for(auto nxt : graph[curr]) {
+                    if(visited[nxt] == visited[curr])
+                        return false;
+                    else if(visited[nxt] == -1) {
+                        visited[nxt] = (color == 0) ? 1 : 0;
+                        q.push( {nxt, visited[nxt] } );
+                    }
+                }
+            }
+
+        }
+
+        return true;
+    }
+};
