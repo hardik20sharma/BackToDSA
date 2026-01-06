@@ -1,0 +1,75 @@
+class DSU {
+private:
+    vector<int> parent;
+    vector<int> rank;
+    vector<int> size;
+
+public:
+    DSU(int n) {
+        rank.resize(n, 0);
+        size.resize(n, 1);
+        parent.resize(n, 0);
+
+        for(int i = 0; i < n; i++)
+            parent[i] = i;
+    }
+
+    int findParent(int x) {
+
+        if(parent[x] == x)
+            return x;
+        
+        return parent[x] = findParent(parent[x]);
+    }
+
+    void unionRank(int u, int v) {
+
+        int parentU = findParent(u);
+        int parentV = findParent(v);
+
+        if(parentU == parentV)
+            return;
+        
+        if(rank[parentU] < rank[parentV]) {
+            parent[parentU] = parentV;
+        }
+        else if(rank[parentU] > rank[parentV]) {
+            parent[parentV] = parentU;
+        }
+        else {
+            parent[parentU] = parentV;
+            rank[parentV]++;
+        }
+    }
+
+    void unionSize(int u, int v) {
+
+        int parentU = findParent(u);
+        int parentV = findParent(v);
+
+        if(parentU == parentV)
+            return;
+        
+        if(size[parentU] < size[parentV]) {
+            parent[parentU] = parentV;
+            size[parentV] += size[parentU];
+        }
+        else {
+            parent[parentV] = parentU;
+            size[parentU] += size[parentV];
+        }
+    }
+};
+
+class Solution {
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        
+        DSU dsu(n);
+
+        for(auto edge : edges)
+            dsu.unionSize(edge[0], edge[1]);
+        
+        return dsu.findParent(source) == dsu.findParent(destination);
+    }
+};
