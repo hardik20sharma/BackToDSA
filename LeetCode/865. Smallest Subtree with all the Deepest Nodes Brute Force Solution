@@ -1,0 +1,61 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+
+    unordered_map<int, vector<TreeNode*>> mp;
+    set<TreeNode*> lastNodes;
+    int maxlvl;
+
+    int fillMap(TreeNode* root, int lvl = 0) {
+
+        if(root == NULL)
+            return lvl;
+        
+        mp[lvl].push_back(root);
+
+        return max( fillMap(root->left, lvl+1), fillMap(root->right, lvl+1) );
+    }
+
+    void traverse(TreeNode *root, int &cnt) {
+        
+        if(root == NULL)
+            return;
+
+        if(lastNodes.find(root) != lastNodes.end())
+            cnt++;
+        
+        traverse(root->left, cnt);
+        traverse(root->right, cnt);
+    }
+
+public:
+    TreeNode* subtreeWithAllDeepest(TreeNode* root) {
+        
+        maxlvl = fillMap(root) - 1;
+
+        if(mp[maxlvl].size() == 1)
+            return mp[maxlvl][0];
+        
+        lastNodes = set<TreeNode*>(mp[maxlvl].begin(), mp[maxlvl].end());
+
+        for(int i = maxlvl; 0 <= i; i--) {
+            for(auto j : mp[i]) {
+                int cnt = 0;
+                traverse(j, cnt);
+                if(cnt == lastNodes.size())
+                    return j;
+            }
+        }
+
+        return NULL;
+    }
+};
