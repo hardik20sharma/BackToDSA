@@ -1,0 +1,60 @@
+class Solution {
+
+    int getMaxHistogramArea(vector<int> &heights) {
+
+        int res = 0;
+        int n = heights.size();
+        
+        stack<int> s;
+
+        for(int currIdx = 0; currIdx < n; currIdx++) {
+            
+            while(!s.empty() && heights[s.top()] > heights[currIdx]) {
+                
+                int prevIdx = s.top(); s.pop();
+
+                int height = heights[prevIdx];
+                int width = s.empty() ? currIdx : currIdx - s.top() - 1;
+                
+                res = max(res, height * width);
+            }
+
+            s.push(currIdx);
+        }
+
+        while(!s.empty()) {
+
+            int prevIdx = s.top(); s.pop();
+            
+            int height = heights[prevIdx];
+            int width = s.empty() ? n : n - s.top() - 1;
+            int area = height * width;
+
+            res = max(res, area);
+        }
+
+        return res;
+    }
+
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+
+        int m = matrix.size();
+        int n = matrix[0].size();
+        int res = 0;
+
+        vector<int> heights(n, 0);
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(matrix[i][j] == '1')
+                    heights[j]++;
+                else
+                    heights[j] = 0;
+            }
+            res = max(res, getMaxHistogramArea(heights));
+        }
+
+        return res;
+    }
+};
