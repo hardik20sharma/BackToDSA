@@ -1,0 +1,41 @@
+#define pii pair<int, int>
+class Solution {
+
+public:
+
+    int minCost(int n, vector<vector<int>>& edges) {
+        
+        vector<vector<pii>> graph(n);
+
+        for(auto edge : edges) {
+            int u = edge[0], v = edge[1], w = edge[2];
+            graph[u].push_back({w, v});
+            graph[v].push_back({2*w, u});
+        }
+
+        vector<int> dist(n, INT_MAX);
+
+        priority_queue<pii, vector<pii>, greater<pii>> pq;
+        pq.push( {0, 0} );
+        dist[0] = 0;
+
+        while(!pq.empty()) {
+            
+            int u = pq.top().second;
+            pq.pop();
+
+            for(auto nxt : graph[u]) {
+                int v = nxt.second;
+                int w = nxt.first;
+
+                if(dist[v] > dist[u] + w) {
+                    dist[v] = dist[u] + w;
+                    pq.push( {dist[v], v} );
+                }
+            }
+
+        }
+
+        return dist[n-1] == INT_MAX ? -1 : dist[n-1];
+    }
+};
