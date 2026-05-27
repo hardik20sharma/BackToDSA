@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int numberOfSpecialChars(string s) {
+        
+        int n = s.size();
+        vector<int> small (26, INT_MAX);
+        vector<int> caps (26, INT_MIN);
+
+        for(int i = 0; i < n; i++)
+            if('a' <= s[i] && s[i] <= 'z')
+                small[s[i] - 'a'] = i;
+            else if(caps[s[i] - 'A'] == INT_MIN)
+                caps[s[i] - 'A'] = i;
+
+        int res = 0;
+
+        for(int i = 0; i < 26; i++)
+            if(small[i] < caps[i])
+                res++;
+        
+        return res;
+    }
+};
