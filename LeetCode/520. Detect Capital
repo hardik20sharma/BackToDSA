@@ -1,0 +1,17 @@
+class Solution {
+    public boolean detectCapitalUse(String s) {
+
+        int n = s.length();
+
+        boolean firstCap = Character.isUpperCase(s.charAt(0));
+        boolean restCaps = true, restSmall = true;
+
+        for(int i = 1; i < n; i++)
+            if(Character.isLowerCase(s.charAt(i)))
+                restCaps = false;
+            else
+                restSmall = false;
+
+        return (firstCap && restCaps) || (restSmall);
+    }
+}
