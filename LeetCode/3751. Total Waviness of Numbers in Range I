@@ -1,0 +1,30 @@
+class Solution {
+
+    int waviCnt(int num) {
+
+        string s = to_string(num);
+
+        if(s.size() < 3)
+            return 0;
+        
+        int res = 0;
+        
+        for(int i = 1; i < s.size() - 1; i++)
+            if(s[i-1] > s[i] && s[i] < s[i+1])
+                res++;
+            else if(s[i-1] < s[i] && s[i] > s[i+1])
+                res++;
+
+        return res;
+    }
+
+public:
+    int totalWaviness(int num1, int num2) {
+        
+        int res = 0;
+        for(int i = num1; i <= num2; i++)
+            res += waviCnt(i);
+
+        return res;
+    }
+};
