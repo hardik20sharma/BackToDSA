@@ -1,0 +1,23 @@
+class Solution {
+
+    char helper(string s, vector<int> &weights) {
+
+        int sum = 0;
+
+        for(char c : s)
+            sum += weights[c - 'a'];
+
+        return 'a' + 25 - (sum % 26);
+    }
+
+public:
+    string mapWordWeights(vector<string>& words, vector<int>& weights) {
+        
+        string res = "";
+
+        for(string word : words)
+            res += helper(word, weights);
+
+        return res;
+    }
+};
